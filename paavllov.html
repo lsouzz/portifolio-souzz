@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PAVLOV EXPERIMENTAL ANALYTICS — Historical Analysis of Classical Conditioning Experiments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --k0:#000000; --k1:#050505; --k2:#080808; --k3:#0B0F14;
+  --n1:#071A33; --n2:#0B2342; --n3:#102F52; --n4:#163F6B;
+  --w:#FFFFFF; --w2:#F2F4F7; --g:#AAB4C0;
+  --sans:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+  --serif:"IBM Plex Serif",Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--k1);color:var(--w2);font-family:var(--sans);font-size:15px;line-height:1.55;font-variant-numeric:tabular-nums}
+a{color:var(--w);text-decoration-color:var(--n4);text-underline-offset:3px}
+a:hover{text-decoration-color:var(--w)}
+:focus-visible{outline:2px solid var(--w);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;margin:0;color:var(--w)}
+p{margin:0 0 .8em}
+small,.muted{color:var(--g)}
+.wrap{max-width:1320px;margin:0 auto;padding:0 28px}
+
+/* top navigation */
+.topnav{position:sticky;top:0;z-index:50;background:var(--k0);border-bottom:1px solid var(--n3)}
+.topnav .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:0;padding-bottom:0;scrollbar-width:thin;scrollbar-color:var(--n4) var(--k0)}
+.topnav a{flex:none;padding:14px 12px;font-size:13px;color:var(--g);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap}
+.topnav a:hover{color:var(--w);border-bottom-color:var(--n4)}
+
+/* hero */
+.hero{background:linear-gradient(180deg,var(--n1) 0%,var(--k3) 70%,var(--k1) 100%);border-bottom:1px solid var(--n3)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:48px;padding-top:64px;padding-bottom:56px;align-items:end}
+.hero h1{font-size:clamp(34px,5vw,60px);line-height:1.05;letter-spacing:-.01em}
+.hero .sub{font-family:var(--serif);font-size:clamp(17px,1.8vw,22px);color:var(--w2);margin-top:14px}
+.hero .meta{margin-top:22px;color:var(--g);font-size:14px;display:grid;gap:4px}
+.hero .meta b{color:var(--w);font-weight:500}
+.badge-src{display:inline-block;margin-top:22px;border:1px solid var(--n4);background:var(--n2);padding:8px 14px;font-size:13px;color:var(--w)}
+.refobs{border:1px solid var(--n4);background:var(--k3);padding:18px 20px}
+.refobs h3{font-size:15px;margin-bottom:2px}
+.refobs .cap{font-size:12.5px;color:var(--g);margin-bottom:10px}
+.refobs svg{width:100%;height:auto;display:block}
+
+/* sections */
+section.block{padding:56px 0 8px;border-top:1px solid var(--n3)}
+section.block:first-of-type{border-top:0}
+.sec-head{margin-bottom:22px;max-width:860px}
+.sec-head h2{font-size:clamp(24px,2.6vw,32px);letter-spacing:-.005em}
+.sec-head p{color:var(--g);margin-top:8px}
+.panel{background:var(--k3);border:1px solid var(--n3);padding:20px 22px}
+.panel.flat{background:var(--k2)}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:1000px){.hero .wrap{grid-template-columns:1fr}.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.g2,.g3,.g4{grid-template-columns:1fr}.wrap{padding:0 16px}}
+
+/* chips and badges */
+.chip{display:inline-block;font-size:11.5px;line-height:1;padding:3px 6px;border:1px solid var(--n4);background:var(--n2);color:var(--w);cursor:pointer;font-family:var(--sans);vertical-align:1px}
+.chip:hover{background:var(--n4)}
+.kind{display:inline-block;font-size:11.5px;padding:2px 7px;border:1px solid var(--g);color:var(--w2)}
+.k-Original{background:var(--n4);border-color:var(--n4);color:var(--w)}
+.k-Derived{border-style:dashed;border-color:var(--w);color:var(--w)}
+.k-Qualitative{border-color:var(--g);color:var(--g)}
+.flag{border:1px solid var(--w);color:var(--w);padding:0 5px;font-size:11px;margin-left:6px}
+
+/* intro */
+.intro-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media(max-width:860px){.intro-grid{grid-template-columns:1fr}}
+.intro-grid .panel h3{font-size:17px;margin-bottom:8px}
+.intro-grid .panel p{color:var(--w2);margin-bottom:.6em}
+.note-box{border-left:3px solid var(--n4);background:var(--n1);padding:14px 18px;margin-top:18px;color:var(--w2)}
+.note-box b{color:var(--w)}
+
+/* KPIs */
+.kpi{background:var(--k3);border:1px solid var(--n3);padding:16px 18px}
+.kpi .n{font-family:var(--serif);font-size:38px;line-height:1.1;color:var(--w)}
+.kpi .l{font-size:13.5px;color:var(--w2);margin-top:2px}
+.kpi .s{font-size:12px;color:var(--g);margin-top:6px}
+.kpi-na{margin-top:14px;font-size:13px;color:var(--g)}
+
+/* explorer */
+.explorer{display:grid;grid-template-columns:320px minmax(0,1fr);gap:18px}
+@media(max-width:900px){.explorer{grid-template-columns:1fr}}
+.exlist{background:var(--k3);border:1px solid var(--n3);max-height:640px;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--n4) var(--k3)}
+.exlist .grp{padding:10px 14px;font-size:12px;color:var(--g);background:var(--n1);border-bottom:1px solid var(--n3);position:sticky;top:0}
+.exlist button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--n3);color:var(--w2);padding:10px 14px;font:inherit;font-size:13.5px;cursor:pointer}
+.exlist button:hover{background:var(--n2)}
+.exlist button[aria-current="true"]{background:var(--n4);color:var(--w)}
+.exlist button span{display:block;font-size:11.5px;color:var(--g)}
+.exlist button[aria-current="true"] span{color:var(--w2)}
+.detail h3{font-size:22px;margin-bottom:6px}
+.detail .desc{color:var(--w2);margin-bottom:16px}
+dl.fields{display:grid;grid-template-columns:150px minmax(0,1fr);gap:0;margin:0;border-top:1px solid var(--n3)}
+dl.fields dt,dl.fields dd{margin:0;padding:9px 0;border-bottom:1px solid var(--n3);font-size:14px}
+dl.fields dt{color:var(--g)}
+@media(max-width:600px){dl.fields{grid-template-columns:1fr}dl.fields dt{border-bottom:0;padding-bottom:0}}
+.btn{display:inline-block;background:var(--n4);color:var(--w);border:1px solid var(--g);padding:9px 16px;font:inherit;font-size:14px;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--n3)}
+.btn.ghost{background:none;border-color:var(--n4)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* charts */
+.chartcard{background:var(--k3);border:1px solid var(--n3);padding:18px 20px;display:flex;flex-direction:column}
+.chartcard h3{font-size:17px}
+.chartcard .cnote{font-size:12.5px;color:var(--g);margin:4px 0 12px}
+.chartbox{position:relative;height:280px}
+.chartbox.tall{height:340px}
+.chartcard .foot{margin-top:12px;font-size:12.5px;color:var(--g);display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.nochart{border:1px dashed var(--n4);padding:14px 16px;background:var(--k2)}
+.nochart h4{font-size:15px;margin-bottom:4px}
+.nochart p{font-size:13px;color:var(--g);margin:0 0 4px}
+.nochart .msg{color:var(--w2)}
+
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+@media(max-width:1100px){.pipe{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.pipe{grid-template-columns:1fr}}
+.stage{background:var(--k3);border:1px solid var(--n3);padding:14px 16px;position:relative}
+.stage h4{font-size:15px;margin-bottom:6px}
+.stage .st{font-size:11.5px;display:inline-block;padding:2px 6px;border:1px solid var(--n4);color:var(--w);background:var(--n2);margin-bottom:8px}
+.stage .st.none{background:none;border-style:dashed;color:var(--g);border-color:var(--g)}
+.stage ul{margin:0;padding-left:16px;font-size:13px;color:var(--w2)}
+.stage ul li{margin:3px 0}
+
+/* layers for recovery */
+.layers{display:grid;gap:0}
+.layers .ly{padding:8px 0;border-top:1px solid var(--n3);font-size:13.5px}
+.layers .ly:first-child{border-top:0}
+.layers .ly b{display:block;font-weight:500;font-size:12px;color:var(--g);margin-bottom:2px}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0 0 0 0;border-left:2px solid var(--n4)}
+.tl li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;padding:10px 0 10px 18px;position:relative}
+.tl li::before{content:"";position:absolute;left:-7px;top:18px;width:12px;height:12px;background:var(--k1);border:2px solid var(--w)}
+.tl .yr{font-family:var(--serif);color:var(--w);font-size:17px}
+.tl .tx{color:var(--w2);font-size:14px}
+@media(max-width:600px){.tl li{grid-template-columns:1fr;gap:2px}}
+
+/* table */
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;align-items:center}
+.tools input,.tools select{background:var(--k2);color:var(--w2);border:1px solid var(--n4);padding:8px 10px;font:inherit;font-size:14px;min-width:0}
+.tools input{flex:1 1 240px}
+.tablewrap{overflow:auto;border:1px solid var(--n3);background:var(--k3);scrollbar-width:thin;scrollbar-color:var(--n4) var(--k3)}
+table.dt{border-collapse:collapse;width:100%;min-width:1500px;font-size:13px}
+table.dt th,table.dt td{padding:8px 10px;border-bottom:1px solid var(--n3);text-align:left;vertical-align:top}
+table.dt th{background:var(--n1);color:var(--w);position:sticky;top:0;font-weight:500;white-space:nowrap;cursor:pointer;user-select:none}
+table.dt th:hover{background:var(--n2)}
+table.dt tr:hover td{background:var(--k2)}
+table.dt td.num{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--w)}
+.pager{display:flex;gap:10px;align-items:center;margin-top:12px;color:var(--g);font-size:13.5px;flex-wrap:wrap}
+
+/* inspector */
+.insp{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:18px}
+@media(max-width:900px){.insp{grid-template-columns:1fr}}
+.insp select{width:100%;background:var(--k2);color:var(--w2);border:1px solid var(--n4);padding:9px 10px;font:inherit;font-size:14px;margin-bottom:12px}
+.insp table{border-collapse:collapse;width:100%;font-size:13px}
+.insp td,.insp th{padding:7px 8px;border-bottom:1px solid var(--n3);text-align:left;vertical-align:top}
+.insp th{color:var(--g);font-weight:500}
+
+/* notes */
+details.note{border:1px solid var(--n3);background:var(--k3);margin-bottom:8px}
+details.note summary{cursor:pointer;padding:12px 16px;list-style:none;display:flex;gap:12px;justify-content:space-between;align-items:baseline}
+details.note summary::-webkit-details-marker{display:none}
+details.note summary b{font-weight:500;color:var(--w)}
+details.note[open] summary{background:var(--n1);border-bottom:1px solid var(--n3)}
+details.note .nb{padding:6px 16px 14px}
+details.note .nb div{padding:8px 0;border-bottom:1px solid var(--n3);font-size:14px}
+details.note .nb div:last-child{border-bottom:0}
+details.note .nb span.lab{display:block;font-size:12px;color:var(--g)}
+
+/* hierarchy */
+.tier{border:1px solid var(--n3);background:var(--k3);padding:16px 20px;margin-bottom:12px}
+.tier.t1{border-color:var(--w);background:var(--n2)}
+.tier.t2{border-color:var(--n4);background:var(--n1)}
+.tier h3{font-size:16px;margin-bottom:8px}
+.tier .row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.4fr);gap:14px;padding:8px 0;border-top:1px solid var(--n3);font-size:13.5px}
+.tier .row:first-of-type{border-top:0}
+@media(max-width:800px){.tier .row{grid-template-columns:1fr}}
+.bars{display:grid;gap:8px;margin-top:10px}
+.bar{display:grid;grid-template-columns:130px minmax(0,1fr) 40px;gap:10px;align-items:center;font-size:13px}
+.bar i{display:block;height:12px;background:var(--n4);border:1px solid var(--g)}
+.bar.d i{background:none;border:1px dashed var(--w)}
+.bar.q i{background:none;border:1px solid var(--g)}
+
+.disclaimer{border:1px solid var(--w);background:var(--k0);padding:20px 24px;font-family:var(--serif);font-size:16px;line-height:1.6;color:var(--w)}
+footer{padding:36px 0 60px;color:var(--g);font-size:13px;border-top:1px solid var(--n3);margin-top:56px}
+.ul{margin:.3em 0 .8em;padding-left:1.1em}
+.ul li{margin:.25em 0}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.topnav{display:none}}
+</style>
+</head>
+<body>
+
+<nav class="topnav" aria-label="Seções">
+  <div class="wrap">
+    <a href="#experiment">Experiment</a>
+    <a href="#kpis">KPIs</a>
+    <a href="#explorer">Explorer</a>
+    <a href="#charts">Charts</a>
+    <a href="#conditioning">Conditioning</a>
+    <a href="#extinction">Extinction</a>
+    <a href="#recovery">Recovery</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#datatable">Data table</a>
+    <a href="#inspector">Source Inspector</a>
+    <a href="#notes">Research Notes</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#hierarchy">Source Hierarchy</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <h1>PAVLOV EXPERIMENTAL ANALYTICS</h1>
+      <p class="sub">Historical Analysis of Classical Conditioning Experiments</p>
+      <div class="meta">
+        <div><b>Classical Conditioning Research Dashboard</b></div>
+        <div>Historical Experimental Data</div>
+      </div>
+      <div class="badge-src">Source: Nobel Prize / Pavlov’s Original Work</div>
+    </div>
+    <aside class="refobs" aria-label="Observação de referência">
+      <h3>Reference observation</h3>
+      <div class="cap">Metronome as conditioned stimulus, dog with salivary fistula (Pavlov, 1927, Lecture II, p. 22). Values as printed.</div>
+      <div id="heroSvg"></div>
+    </aside>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- EXPERIMENT -->
+<section class="block" id="experiment">
+  <div class="sec-head">
+    <h2>O experimento</h2>
+    <p>Contexto histórico extraído somente das páginas oficiais do Nobel Prize e da Nobel Lecture. Cada afirmação traz a referência de origem; clique na etiqueta para abrir o Source Inspector.</p>
+  </div>
+  <div class="intro-grid">
+    <div class="panel">
+      <h3>Quem foi Ivan Pavlov</h3>
+      <p>Ivan Petrovich Pavlov nasceu em Ryazan, Rússia, em 14 de setembro de 1849, e morreu em Leningrado em 27 de fevereiro de 1936. Recebeu o Prêmio Nobel de Fisiologia ou Medicina de 1904 pelo trabalho sobre a fisiologia da digestão. <span class="chip" data-src="S2">S2</span></p>
+      <p>Em 1890 foi convidado a organizar e dirigir o Departamento de Fisiologia do Instituto de Medicina Experimental, função que manteve por 45 anos. <span class="chip" data-src="S3">S3</span></p>
+    </div>
+    <div class="panel">
+      <h3>O que ele estudava</h3>
+      <p>Pavlov desenvolveu o experimento “crônico”, com fístulas extensivas, que permitia observar as funções de órgãos de forma contínua e em condições relativamente normais, em vez de recorrer à vivissecção aguda. A maior parte de sua pesquisa sobre digestão ocorreu entre 1891 e 1900. <span class="chip" data-src="S3">S3</span></p>
+      <p>Na Nobel Lecture de 1904, ele mostra que o tipo de substância que entra na boca determina se as glândulas digestivas trabalham e como, por exemplo, a saliva espessa com alimento e a saliva fluida com substâncias repugnantes. <span class="chip" data-src="S1">S1</span></p>
+    </div>
+    <div class="panel">
+      <h3>Por que a secreção salivar importava</h3>
+      <p>Ao investigar a “secreção psíquica”, provocada por estímulos alimentares à distância, Pavlov usou fístulas nos ductos das glândulas salivares (método de D. D. Glinskii, 1895). Isso o levou a rejeitar a interpretação subjetiva e a concluir que havia um reflexo temporário, ou condicionado. <span class="chip" data-src="S3">S3</span></p>
+      <p>Na lecture, ele descreve a decisão de tratar os fenômenos psíquicos de modo objetivo: ignorar o estado mental do animal e registrar a influência de objetos distantes sobre a secreção das glândulas salivares. <span class="chip" data-src="S1">S1</span></p>
+    </div>
+    <div class="panel">
+      <h3>Como surgiu o reflexo condicionado</h3>
+      <p>Na palestra de 1904, Pavlov distingue o reflexo fisiológico constante (incondicionado) do novo reflexo, que flutua (condicionado). No reflexo condicionado, propriedades como a cor do objeto funcionam como sinais. <span class="chip" data-src="S1">S1</span></p>
+      <p>Em 1903 (Madri) ele apresentou a definição de reflexos condicionados; em 1905 ficou estabelecido que qualquer agente externo coincidindo no tempo com um reflexo comum pode virar sinal condicionado. <span class="chip" data-src="S3">S3</span></p>
+    </div>
+  </div>
+  <div class="note-box">
+    <b>O que as fontes contêm em termos numéricos.</b> A Nobel Lecture (1904) é essencialmente qualitativa: traz poucos números (por exemplo, “2 a 4 vezes”, “uma hora”, “mais de 7–8 anos”) e nenhuma série de gotas ou segundos. Por isso, os valores experimentais deste painel vêm de <i>Conditioned Reflexes</i> (Pavlov, 1927, tradução de G. V. Anrep), texto primário do próprio Pavlov, consultado em cópia de arquivo acadêmico (Classics in the History of Psychology, York University). As tabelas numéricas dessas palestras estão em imagens GIF; elas <b>não</b> foram transcritas, e só entram os números que aparecem no corpo do texto. <span class="chip" data-src="S1">S1</span> <span class="chip" data-src="S4">S4–S8</span>
+  </div>
+</section>
+
+<!-- KPIs -->
+<section class="block" id="kpis">
+  <div class="sec-head">
+    <h2>KPIs</h2>
+    <p>Calculados automaticamente a partir dos registros extraídos. Um indicador só aparece quando os dados permitem calculá-lo.</p>
+  </div>
+  <div class="grid g4" id="kpiGrid"></div>
+  <div class="kpi-na" id="kpiNA"></div>
+</section>
+
+<!-- EXPLORER -->
+<section class="block" id="explorer">
+  <div class="sec-head">
+    <h2>Experiment Explorer</h2>
+    <p>Selecione um experimento ou documento encontrado na pesquisa. Os campos vêm diretamente do registro; o que a fonte não informa aparece como “not stated”.</p>
+  </div>
+  <div class="explorer">
+    <div class="exlist" id="exList" role="list"></div>
+    <div class="panel detail" id="exDetail" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- CHARTS -->
+<section class="block" id="charts">
+  <div class="sec-head">
+    <h2>Visualizations</h2>
+    <p>Somente gráficos que os dados reais sustentam. Cada cartão indica a fonte, a unidade e se os valores são originais ou derivados. Pontos não observados não são interpolados.</p>
+  </div>
+  <div class="grid g2" id="chartGrid"></div>
+
+  <div class="sec-head" style="margin-top:38px">
+    <h3 style="font-size:20px">Visualizações não construídas</h3>
+    <p>Estas visualizações foram avaliadas e descartadas porque os dados quantitativos disponíveis nas fontes não as sustentam.</p>
+  </div>
+  <div class="grid g3" id="noChartGrid"></div>
+</section>
+
+<!-- CONDITIONING -->
+<section class="block" id="conditioning">
+  <div class="sec-head">
+    <h2>CONDITIONING ANALYSIS</h2>
+    <p>O processo de associação descrito por Pavlov, etapa por etapa. Cada etapa indica se foi medida. Etapas sem medição quantitativa ficam sem número.</p>
+  </div>
+  <div class="pipe" id="pipe"></div>
+  <div class="grid g2" style="margin-top:18px" id="condCharts"></div>
+</section>
+
+<!-- EXTINCTION -->
+<section class="block" id="extinction">
+  <div class="sec-head">
+    <h2>EXTINCTION ANALYSIS</h2>
+    <p>Dados quantitativos documentados sobre o enfraquecimento da resposta com a repetição do estímulo. Extinção propriamente dita (sem alimento) e queda sob reforço são casos distintos e estão rotuladas como tais.</p>
+  </div>
+  <div class="grid g2" id="extCharts"></div>
+  <div class="grid g2" style="margin-top:18px" id="extCards"></div>
+</section>
+
+<!-- RECOVERY -->
+<section class="block" id="recovery">
+  <div class="sec-head">
+    <h2>RECOVERY ANALYSIS</h2>
+    <p>Recuperação da resposta após descanso, após apresentação de alimento e após outros estímulos. Cada cartão separa observação original, cálculo derivado e interpretação.</p>
+  </div>
+  <div class="grid g2" id="recCharts"></div>
+  <div class="grid g2" style="margin-top:18px" id="recCards"></div>
+</section>
+
+<!-- TIMELINE -->
+<section class="block" id="timeline">
+  <div class="sec-head">
+    <h2>Experimental Timeline</h2>
+    <p>Datas documentadas nas páginas do Nobel Prize e no registro da tradução de 1927. Não há datas de sessões experimentais individuais nas fontes recuperadas, exceto as descritas nos experimentos.</p>
+  </div>
+  <div class="panel"><ul class="tl" id="tl"></ul></div>
+</section>
+
+<!-- DATA TABLE -->
+<section class="block" id="datatable">
+  <div class="sec-head">
+    <h2>Data Table</h2>
+    <p>Todos os registros extraídos: valores originais, cálculos derivados e descrições qualitativas. Clique no cabeçalho para ordenar.</p>
+  </div>
+  <div class="tools">
+    <input type="search" id="tQ" placeholder="Buscar em todos os campos" aria-label="Buscar">
+    <select id="tKind" aria-label="Filtrar por tipo de dado"><option value="">Todos os tipos de dado</option></select>
+    <select id="tType" aria-label="Filtrar por tipo de estímulo"><option value="">Todos os tipos de estímulo</option></select>
+    <select id="tSrc" aria-label="Filtrar por fonte"><option value="">Todas as fontes</option></select>
+    <button class="btn ghost" id="tCsv" type="button">Exportar CSV</button>
+  </div>
+  <div class="tablewrap"><table class="dt" id="dt"><thead></thead><tbody></tbody></table></div>
+  <div class="pager" id="pager"></div>
+</section>
+
+<!-- INSPECTOR -->
+<section class="block" id="inspector">
+  <div class="sec-head">
+    <h2>SOURCE INSPECTOR</h2>
+    <p>Escolha um conjunto de dados para ver a fonte, o trecho, o valor e a unidade originais e a transformação aplicada pelo painel.</p>
+  </div>
+  <div class="insp">
+    <div class="panel">
+      <label for="inspSel" class="muted" style="display:block;margin-bottom:6px">Conjunto de dados</label>
+      <select id="inspSel"></select>
+      <div id="inspMeta"></div>
+    </div>
+    <div class="panel" style="overflow:auto"><div id="inspRows"></div></div>
+  </div>
+</section>
+
+<!-- NOTES -->
+<section class="block" id="notes">
+  <div class="sec-head">
+    <h2>RESEARCH NOTES</h2>
+    <p>Uma nota por experimento: contexto, método descrito, observação, resultado quantitativo, limitação e fonte. Nenhuma interpretação especulativa é apresentada como fato.</p>
+  </div>
+  <div id="notesList"></div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="block" id="methodology">
+  <div class="sec-head">
+    <h2>METHODOLOGY</h2>
+  </div>
+  <div class="grid g2">
+    <div class="panel">
+      <h3 style="font-size:17px;margin-bottom:8px">Seleção das fontes</h3>
+      <p>A fonte principal obrigatória foi a Nobel Lecture de Pavlov (12 de dezembro de 1904), com as páginas Facts e Biographical do Nobel Prize para o contexto. A leitura integral da lecture mostrou que ela não contém séries de gotas, segundos ou repetições. Para não deixar o painel sem dados, recorreu-se a <i>Conditioned Reflexes</i> (1927), obra do próprio Pavlov na tradução de G. V. Anrep, lida em cópia de arquivo acadêmico da York University (Nível 3). Foram lidas as Lectures II, III, IV, V e XIV, nas quais os números aparecem no corpo do texto. Nenhuma fonte secundária forneceu qualquer valor.</p>
+      <h3 style="font-size:17px;margin:14px 0 8px">Extração</h3>
+      <p>Cada número foi copiado com a unidade e o contexto do original, sempre com a seção e a página (marcadores [p. N] da edição inglesa de 1927). Valores expressos como fração (“5½ drops”) foram convertidos em decimal (5,5). “7 minutos 10 segundos” foi convertido em 430 s; a conversão está registrada na coluna de transformação.</p>
+      <h3 style="font-size:17px;margin:14px 0 8px">Normalização</h3>
+      <p>Não houve normalização estatística. Unidades (gotas, c.c., segundos) foram mantidas como impressas. Não se somam nem se comparam valores de experimentos diferentes, e por isso não há média geral de resposta.</p>
+    </div>
+    <div class="panel">
+      <h3 style="font-size:17px;margin-bottom:8px">Original, derivado, qualitativo</h3>
+      <ul class="ul">
+        <li><span class="kind k-Original">Original</span> número presente na fonte, preservado.</li>
+        <li><span class="kind k-Derived">Derived</span> cálculo feito pelo painel (razão, diferença, taxa), com a fórmula registrada.</li>
+        <li><span class="kind k-Qualitative">Qualitative</span> descrição sem número utilizável como resultado (ou com números apenas de desenho do experimento).</li>
+      </ul>
+      <div class="bars" id="kindBars"></div>
+      <h3 style="font-size:17px;margin:16px 0 8px">Quais gráficos usam dados observados</h3>
+      <p>Todos os gráficos de barras e de dispersão usam valores <span class="kind k-Original">Original</span>, exceto “Derived secretion rate” e “Stimulus frequency”, que são cálculos do painel e estão rotulados.</p>
+      <h3 style="font-size:17px;margin:14px 0 8px">Limitações conhecidas</h3>
+      <ul class="ul">
+        <li>As tabelas numéricas das lectures são imagens GIF e não foram lidas; séries completas de extinção e recuperação, portanto, não estão representadas.</li>
+        <li>Janelas de medição e animais diferem entre experimentos; os gráficos nunca misturam experimentos numa mesma série.</li>
+        <li>O valor de 0,1% HCl (incondicionado) aparece na transcrição como “52 c.c.”, possivelmente artefato de transcrição junto ao marcador de página; ele não foi usado em nenhum cálculo (ver conflito abaixo).</li>
+      </ul>
+      <h3 style="font-size:17px;margin:14px 0 8px">Conflitos e ambiguidades registrados</h3>
+      <div id="conflicts"></div>
+    </div>
+  </div>
+</section>
+
+<!-- HIERARCHY -->
+<section class="block" id="hierarchy">
+  <div class="sec-head">
+    <h2>SOURCE HIERARCHY</h2>
+    <p>Quais fontes foram usadas, qual a função de cada uma e quantos registros dependem delas.</p>
+  </div>
+  <div id="tiers"></div>
+</section>
+
+<section class="block" id="disclaimer">
+  <div class="sec-head"><h2>Disclaimer científico</h2></div>
+  <div class="disclaimer">Este dashboard é uma visualização dos dados históricos encontrados nas fontes citadas. Métricas derivadas são identificadas como cálculos do dashboard e não devem ser interpretadas como medidas originalmente definidas por Pavlov.</div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">PAVLOV EXPERIMENTAL ANALYTICS · arquivo único, processamento local no navegador · Chart.js via CDN · dados incorporados neste arquivo.</div>
+</footer>
+
+<script>
+"use strict";
+/* =====================================================================
+   SOURCES
+   ===================================================================== */
+const Y = 'https://psychclassics.yorku.ca/Pavlov/';
+const YORK = 'Classics in the History of Psychology, York University (Toronto), ed. C. D. Green';
+const SOURCES = {
+  S1:{id:'S1',title:'Ivan Pavlov — Nobel Lecture: Physiology of Digestion (12 Dec 1904)',inst:'Nobel Prize Outreach / Nobel Foundation (NobelPrize.org)',url:'https://www.nobelprize.org/prizes/medicine/1904/pavlov/lecture/',level:1,tier:'PRIMARY SOURCE',role:'Texto primário de Pavlov (1904), hospedado pela fonte institucional oficial. Contexto histórico e poucas afirmações numéricas.'},
+  S2:{id:'S2',title:'Ivan Pavlov — Facts',inst:'Nobel Prize Outreach (NobelPrize.org)',url:'https://www.nobelprize.org/prizes/medicine/1904/pavlov/facts/',level:2,tier:'INSTITUTIONAL',role:'Datas e dados biográficos básicos; motivação do prêmio.'},
+  S3:{id:'S3',title:'Ivan Pavlov — Biographical',inst:'Nobel Prize Outreach (NobelPrize.org), from Nobel Lectures 1901-1921',url:'https://www.nobelprize.org/prizes/medicine/1904/pavlov/biographical/',level:2,tier:'INSTITUTIONAL',role:'Biografia, método das fístulas, origem do conceito de reflexo condicionado, cronologia.'},
+  S4:{id:'S4',title:'Pavlov (1927), Conditioned Reflexes — Lecture II (trans. G. V. Anrep)',inst:YORK,url:Y+'lecture2.htm',level:3,tier:'PRIMARY TEXT · ACADEMIC ARCHIVE',role:'Fonte principal dos números de latência, gotas e ordem dos estímulos.'},
+  S5:{id:'S5',title:'Pavlov (1927), Conditioned Reflexes — Lecture III (trans. G. V. Anrep)',inst:YORK,url:Y+'lecture3.htm',level:3,tier:'PRIMARY TEXT · ACADEMIC ARCHIVE',role:'Reflexos de segunda ordem, estímulo de tom, reflexo de tempo.'},
+  S6:{id:'S6',title:'Pavlov (1927), Conditioned Reflexes — Lecture IV: Extinction (trans. G. V. Anrep)',inst:YORK,url:Y+'lecture4.htm',level:3,tier:'PRIMARY TEXT · ACADEMIC ARCHIVE',role:'Extinção, recuperação espontânea e restauração por outros estímulos.'},
+  S7:{id:'S7',title:'Pavlov (1927), Conditioned Reflexes — Lecture V: Conditioned Inhibition (trans. G. V. Anrep)',inst:YORK,url:Y+'lecture5.htm',level:3,tier:'PRIMARY TEXT · ACADEMIC ARCHIVE',role:'Inibição condicionada e pós-efeito inibitório.'},
+  S8:{id:'S8',title:'Pavlov (1927), Conditioned Reflexes — Lecture XIV: Development of inhibition (trans. G. V. Anrep)',inst:YORK,url:Y+'lecture14.htm',level:3,tier:'PRIMARY TEXT · ACADEMIC ARCHIVE',role:'Queda da resposta com a repetição sob reforço (Speransky, Solovaichik).'}
+};
+
+/* =====================================================================
+   OBSERVATIONS — every record is a real statement found in a source.
+   Fields: e experiment, s stimulus, t stimulus type, v value, vh upper value (range),
+   u unit, m metric, d duration, tr trial, c condition, a animal, o observation,
+   k kind (Original|Derived|Qualitative), src, sec, og original text, x transformation
+   ===================================================================== */
+const D0 = {a:'Dog',k:'Original',x:'None — value preserved as printed',c:'—',tr:'—',d:'—',og:'—',flag:''};
+const RAW = [
+/* E01 — Lecture II demonstrations */
+{key:'m_drops',e:'E01',s:'Metronome',t:'CS',v:11,u:'drops',m:'Salivary secretion',d:'45 s',tr:'Single demonstration',c:'Established conditioned stimulus',a:'Dog (salivary fistula)',o:'Eleven drops secreted within 45 s of the metronome sound',src:'S4',sec:'Lecture II, p. 22',og:'11 drops in 45 seconds'},
+{key:'m_lat',e:'E01',s:'Metronome',t:'CS',v:9,u:'s',m:'Latent period',tr:'Single demonstration',c:'Established conditioned stimulus',a:'Dog (salivary fistula)',o:'Secretion began 9 s after the metronome started',src:'S4',sec:'Lecture II, p. 22',og:'9 seconds'},
+{key:'f_drops',e:'E01',s:'Sight/smell of food',t:'CS',v:6,u:'drops',m:'Salivary secretion',d:'15 s',tr:'Single demonstration',c:'Food shown to the animal',a:'Dog (salivary fistula; same animal not stated)',o:'Six drops collected in 15 s',src:'S4',sec:'Lecture II, p. 22',og:'6 drops in 15 seconds'},
+{key:'f_lat',e:'E01',s:'Sight/smell of food',t:'CS',v:5,u:'s',m:'Latent period',tr:'Single demonstration',c:'Food shown to the animal',a:'Dog (salivary fistula; same animal not stated)',o:'Secretion began 5 s after food was shown',src:'S4',sec:'Lecture II, p. 22',og:'5 seconds'},
+{key:'u_lat',e:'E01',s:'Food introduced into mouth',t:'UCS',v:1,vh:2,u:'s',m:'Latent period',tr:'Single demonstration',c:'Food suddenly placed in the mouth',o:'Secretion began within 1–2 s; purely reflex',src:'S4',sec:'Lecture II, p. 23',og:'1 to 2 seconds'},
+{key:'base0',e:'E01',s:'None (no stimulus applied)',t:'Baseline',v:0,u:'drops',m:'Spontaneous secretion',d:'1–2 h',tr:'Baseline observation',c:'Isolated, sound-proofed laboratory',o:'Animal can be kept under observation 1–2 h with no secretion independent of the observer’s stimuli',src:'S4',sec:'Lecture II, p. 24',og:'0 drops in 1 to 2 hours',vh:null},
+{key:'m_rate',e:'E01',s:'Metronome',t:'CS',v:+(11/45).toFixed(3),u:'drops/s',m:'Mean secretion rate (derived)',d:'45 s',tr:'Single demonstration',c:'Dashboard calculation',k:'Derived',o:'Average rate over the 45 s window, from 11 drops',src:'S4',sec:'Lecture II, p. 22 (from {m_drops})',x:'11 drops ÷ 45 s = 0.244 drops/s; assumes uniform rate, which the source does not state'},
+{key:'f_rate',e:'E01',s:'Sight/smell of food',t:'CS',v:+(6/15).toFixed(3),u:'drops/s',m:'Mean secretion rate (derived)',d:'15 s',tr:'Single demonstration',c:'Dashboard calculation',k:'Derived',o:'Average rate over the 15 s window, from 6 drops',src:'S4',sec:'Lecture II, p. 22 (from {f_drops})',x:'6 drops ÷ 15 s = 0.4 drops/s; assumes uniform rate, which the source does not state'},
+
+/* E02 — Krestovnikov */
+{key:'kr_van',e:'E02',s:'Vanillin odour (acid given 5–10 s before)',t:'Neutral (backward)',v:427,u:'applications',m:'Combinations applied',tr:'427 successive applications',c:'Backward order: acid first, odour 5–10 s later',a:'Dog (Krestovnikov; number not stated for this case)',o:'Vanillin did not acquire the properties of a conditioned stimulus',src:'S4',sec:'Lecture II, p. 27',og:'427 applications; no conditioned reflex',out:'not established'},
+{key:'kr_amyl',e:'E02',s:'Amyl acetate odour (before acid)',t:'Neutral (forward)',v:20,u:'combinations',m:'Combinations until effective',tr:'20 combinations',c:'Forward order: odour first, then acid (order reversed from the previous case)',a:'Dog (Krestovnikov)',o:'Odour became an effective conditioned stimulus after only 20 combinations',src:'S4',sec:'Lecture II, p. 27',og:'20 combinations',out:'established'},
+{key:'kr_bell',e:'E02',s:'Electric bell buzzing (after food by 5–10 s)',t:'Neutral (backward)',v:374,u:'combinations',m:'Combinations applied',tr:'374 combinations',c:'Backward order: bell set going 5–10 s after food',a:'Another dog (Krestovnikov)',o:'No conditioned alimentary reflex established',src:'S4',sec:'Lecture II, p. 27',og:'374 combinations; not established',out:'not established'},
+{key:'kr_rot',e:'E02',s:'Rotating object in front of the eyes (before food)',t:'Neutral (forward)',v:5,u:'combinations',m:'Combinations until effective',tr:'5 combinations',c:'Forward order: rotation began before food',a:'Another dog (Krestovnikov)',o:'Acquired properties of a conditioned stimulus after only 5 combinations',src:'S4',sec:'Lecture II, p. 27',og:'5 combinations',out:'established'},
+{key:'kr_buz',e:'E02',s:'Electric buzzer (before food)',t:'Neutral (forward)',v:1,u:'combination',m:'Combinations until effective',tr:'1 combination',c:'Forward order: buzzer set going before food',a:'Dog (Krestovnikov; not specified for this case)',o:'Established a conditioned alimentary reflex after a single combination',src:'S4',sec:'Lecture II, p. 27',og:'a single combination',out:'established'},
+{key:'kr_5',e:'E02',s:'Neutral stimulus applied 10 s, 5 s or 1 s after UCS onset',t:'Neutral (backward)',v:5,u:'dogs',m:'Dogs tested',c:'Neutral stimulus applied after the start of the UCS',a:'Five dogs',o:'Result was always negative; no conditioned reflex formed',src:'S4',sec:'Lecture II, pp. 27–28',og:'five dogs; negative result'},
+
+/* E03 — Solomonov thermal */
+{key:'so_45',e:'E03',s:'Thermal stimulus on the skin, 45 °C',t:'Neutral → CS',v:45,u:'°C',m:'Stimulus temperature',c:'Made into an alimentary conditioned reflex',o:'Became an alimentary conditioned stimulus',src:'S4',sec:'Lecture II, p. 31',og:'45 °C',out:'established'},
+{key:'so_38',e:'E03',s:'Thermal stimulus on the skin, 38–39 °C',t:'Neutral',v:38,vh:39,u:'°C',m:'Stimulus temperature',c:'About 2 °C above skin temperature in the dog',o:'Ineffective as a conditioned stimulus',src:'S4',sec:'Lecture II, p. 31',og:'38° to 39°C',out:'not established'},
+
+/* E04 — Zitovich */
+{e:'E04',s:'Sight of bread or meat',t:'CS',m:'Salivary secretion',c:'Puppies fed only milk for a considerable time; fistulae made at a few months of age',a:'Young dogs (number not stated)',o:'No salivation on seeing bread or meat; sight and smell became effective only after the puppies had eaten bread and meat on several occasions',k:'Qualitative',src:'S4',sec:'Lecture II, pp. 22–23',og:'no secretion before eating; secretion after several occasions'},
+
+/* E05 — Frolov second-order */
+{key:'fr_sq',e:'E05',s:'Black square (second-order CS)',t:'CS (2nd order)',v:5.5,u:'drops',m:'Salivary secretion',d:'25 s',tr:'10th presentation of the square',c:'Square held 10 s; after a 15 s interval the metronome sounded 30 s',a:'Dog with two established primary CSs (metronome, electric bell)',o:'Second-order reflex measured 5½ drops (2.5 + 3) at an early stage',src:'S5',sec:'Lecture III, p. 34',og:'5½ drops (2.5 plus 3) in 25 seconds',x:'5½ printed as 5.5; the 2.5 + 3 split is as printed'},
+
+/* E06 — Zeliony */
+{key:'ze_stop',e:'E06',s:'Sudden stop of pneumatic tuning fork D-2',t:'CS',v:32,u:'drops',m:'Salivary secretion',d:'test interval (length not stated)',tr:'Test',c:'Sudden stoppage had been made the signal for an alimentary reflex',a:'Dog (Zeliony)',o:'Conditioned reflex measured 32 drops during the test interval',src:'S5',sec:'Lecture III, p. 39',og:'32 drops'},
+{key:'ze_damp',e:'E06',s:'Gradual damping of the same tone',t:'CS',v:0,u:'drops',m:'Salivary secretion',d:'12 min',tr:'Test',c:'Tone damped over 12 minutes ending in complete extinction',a:'Dog (Zeliony)',o:'Not a single drop of saliva',src:'S5',sec:'Lecture III, p. 39',og:'0 drops; 12 minutes damping'},
+
+/* E07 — Feokritova */
+{key:'fe_30',e:'E07',s:'Time since the last feeding',t:'CS (time)',v:30,u:'min',m:'Feeding interval',c:'Food given regularly every 30th minute; feeding later omitted in control tests',a:'Dog (Feokritova)',o:'Saliva and alimentary motor reaction appeared at about the 30th minute; sometimes 1–2 min late',src:'S5',sec:'Lecture III, p. 41',og:'every thirtieth minute; up to 1–2 minutes late'},
+{key:'fe_met',e:'E07',s:'Metronome applied early in the interval',t:'CS',v:5,vh:8,u:'min',m:'Time after feeding at which the metronome was tested',c:'Metronome normally sounded just before food at the 30th minute',a:'Dog (Feokritova)',o:'Applied at the 5th or 8th minute it entirely failed to produce a conditioned reflex',src:'S5',sec:'Lecture III, p. 41',og:'5th or 8th minute: no reflex'},
+
+/* E08 — Krylov morphine */
+{key:'kry',e:'E08',s:'Preliminaries of a morphine injection',t:'CS',v:5,vh:6,u:'days',m:'Days of regular injections',c:'Morphine injected hypodermically on a regular schedule',a:'Dogs (Krylov)',o:'After 5–6 days the preliminaries alone produced nausea, salivation, vomiting and sleep',k:'Qualitative',src:'S5',sec:'Lecture III, p. 35',og:'after 5 or 6 days'},
+
+/* E09 — Lecture IV demonstration */
+{key:'ed_design',e:'E09',s:'Metronome (unreinforced)',t:'CS',v:30,u:'s',m:'Stimulus duration (repeated every 2 min)',d:'30 s',tr:'Series of repetitions',c:'Conditioned reflex not reinforced; repetitions at 2-minute intervals',a:'Same dog as Lecture II metronome demonstration',o:'Design of the extinction demonstration; results were given in a table image (Table 5)',k:'Qualitative',src:'S6',sec:'Lecture IV, p. 49',og:'30 s stimulus; 2 min interval'},
+{key:'ed_pre',e:'E09',s:'Metronome (unreinforced)',t:'CS',v:5,u:'drops',m:'Salivary secretion',d:'30 s',tr:'Reading before the 5th repetition',c:'Extinction series',o:'Reading preceding the rise noted at the 5th repetition',src:'S6',sec:'Lecture IV, p. 51',og:'5 drops',x:'“rise from 5 drops to 7” read as 5 drops before and 7 at the 5th repetition'},
+{key:'ed_5',e:'E09',s:'Metronome (unreinforced)',t:'CS',v:7,u:'drops',m:'Salivary secretion',d:'30 s',tr:'5th repetition',c:'Extinction series; a small disturbance from the audience coincided',o:'Reaction rose to 7 drops, attributed by Pavlov to a small extra stimulus',src:'S6',sec:'Lecture IV, p. 51',og:'7 drops'},
+{key:'ed_end',e:'E09',s:'Metronome (unreinforced)',t:'CS',v:3,u:'drops',m:'Salivary secretion',d:'30 s',tr:'Last reading of the extinction series (repetition number not stated)',c:'Partially extinguished reflex',o:'Last reading before the recovery test',src:'S6',sec:'Lecture IV, p. 59',og:'3 drops'},
+{key:'ed_end_l',e:'E09',s:'Metronome (unreinforced)',t:'CS',v:13,u:'s',m:'Latent period',tr:'Last reading of the extinction series',c:'Partially extinguished reflex',o:'Latent period at the last reading',src:'S6',sec:'Lecture IV, p. 59',og:'13 seconds'},
+{key:'ed_rec',e:'E09',s:'Metronome',t:'CS',v:6,u:'drops',m:'Salivary secretion',d:'30 s',tr:'Test 23 min after the extinction',c:'Spontaneous recovery during the lecture',o:'Considerable spontaneous recovery',src:'S6',sec:'Lecture IV, p. 59',og:'6 drops'},
+{key:'ed_rec_l',e:'E09',s:'Metronome',t:'CS',v:5,u:'s',m:'Latent period',tr:'Test 23 min after the extinction',c:'Spontaneous recovery during the lecture',o:'Latent period shortened to 5 s',src:'S6',sec:'Lecture IV, p. 59',og:'5 seconds'},
+{key:'ed_d1',e:'E09',s:'Metronome',t:'CS',v:3,u:'drops',m:'Change in secretion (derived)',tr:'23 min after vs last reading',c:'Dashboard calculation',k:'Derived',o:'Increase in drops between the last extinction reading and the test 23 min later',src:'S6',sec:'Lecture IV, p. 59 (from {ed_end}, {ed_rec})',x:'6 − 3 = +3 drops (+100%)'},
+{key:'ed_d2',e:'E09',s:'Metronome',t:'CS',v:-8,u:'s',m:'Change in latent period (derived)',tr:'23 min after vs last reading',c:'Dashboard calculation',k:'Derived',o:'Shortening of the latent period between the same two readings',src:'S6',sec:'Lecture IV, p. 59 (from {ed_end_l}, {ed_rec_l})',x:'5 − 13 = −8 s'},
+
+/* E10 — Babkin quassia / acid */
+{key:'bq_u',e:'E10',s:'1% quassia extract in mouth',t:'UCS',v:1.71,u:'c.c.',m:'Salivary secretion (mean of 10 experiments)',tr:'Mean of 10 experiments',c:'Given quantity of quassia extract',a:'Dog (Babkin)',o:'Unconditioned reflex averaged 1.71 c.c.',src:'S6',sec:'Lecture IV, p. 51',og:'1.71 c.c. (average of ten experiments)'},
+{key:'bq_c',e:'E10',s:'Quassia presented at a distance',t:'CS',v:0.3,u:'c.c.',m:'Salivary secretion',d:'1 min',c:'Natural conditioned stimulus; other conditions constant',a:'Dog (Babkin)',o:'Conditioned reflex produced 0.3 c.c. during one minute of stimulation',src:'S6',sec:'Lecture IV, p. 51',og:'0.3 c.c. during one minute'},
+{key:'ba_u',e:'E10',s:'0.1% hydrochloric acid in mouth',t:'UCS',m:'Salivary secretion (mean of 5 experiments)',tr:'Mean of 5 experiments',c:'Definite quantity of 0.1% aqueous HCl',a:'Same dog (Babkin)',o:'Value not used: the transcription reads “52 c.c.” right beside a page marker, which is implausible next to 0.9 c.c. for the conditioned reflex',k:'Qualitative',src:'S6',sec:'Lecture IV, pp. 51–52',og:'printed as “52 c.c.” (ambiguous)',flag:'Conflict: value ambiguous in the transcription'},
+{key:'ba_c',e:'E10',s:'Acid presented at a distance',t:'CS',v:0.9,u:'c.c.',m:'Salivary secretion',d:'1 min',c:'Natural conditioned stimulus; other conditions constant',a:'Dog (Babkin)',o:'Conditioned reflex gave 0.9 c.c. during one minute',src:'S6',sec:'Lecture IV, p. 52',og:'0.9 c.c. during one minute'},
+{key:'bq_r',e:'E10',s:'Quassia',t:'CS / UCS',v:+(0.3/1.71).toFixed(3),u:'ratio',m:'Conditioned ÷ unconditioned (derived)',c:'Dashboard calculation',k:'Derived',o:'Conditioned response as a fraction of the unconditioned response for quassia',src:'S6',sec:'Lecture IV, p. 51 (from {bq_u}, {bq_c})',x:'0.3 ÷ 1.71 = 0.175; the two values use different measurement bases (1 min of CS vs given quantity of quassia), so the ratio is only indicative'},
+
+/* E11 — Perelzweig secondary extinction of UCR */
+{key:'pz_b',e:'E11',s:'Hydrochloric acid in mouth',t:'UCS',v:6,u:'c.c.',m:'Salivary secretion (average)',tr:'Before extinctions',c:'Given quantity of acid',a:'Dog (Perelzweig)',o:'Unconditioned reflex averaged 6 c.c.',src:'S6',sec:'Lecture IV, p. 54',og:'6 c.c. on an average'},
+{key:'pz_a',e:'E11',s:'Hydrochloric acid in mouth',t:'UCS',v:3.8,u:'c.c.',m:'Salivary secretion',tr:'After several extinctions of a tactile conditioned defence reflex',c:'Secondary extinction of the unconditioned reflex',a:'Dog (Perelzweig)',o:'Acid itself produced only 3.8 c.c.',src:'S6',sec:'Lecture IV, p. 54',og:'3.8 c.c.'},
+{key:'pz_d',e:'E11',s:'Hydrochloric acid in mouth',t:'UCS',v:+(((3.8-6)/6)*100).toFixed(1),u:'%',m:'Change in secretion (derived)',c:'Dashboard calculation',k:'Derived',o:'Reduction of the unconditioned response after the extinctions',src:'S6',sec:'Lecture IV, p. 54 (from {pz_b}, {pz_a})',x:'(3.8 − 6) ÷ 6 × 100 = −36.7%'},
+
+/* E12 — Babkin pause and extinction */
+{e:'E12',s:'Meat powder shown at a distance, 1 min',t:'CS',v:5,u:'series',m:'Extinction series in one day',d:'1 min per presentation',c:'Dog rested and reinforced with meat powder between series',a:'Dog (Babkin)',o:'Shorter pause between unreinforced repetitions produced faster extinction and usually fewer repetitions; the numeric table is an image',k:'Qualitative',src:'S6',sec:'Lecture IV, p. 52',og:'five series; values in table image'},
+
+/* E13 — Babkin primary / secondary extinction */
+{e:'E13',s:'Metronome (primary extinction); buzzer and tactile (tested)',t:'CS',v:3,u:'min',m:'Interval between unreinforced repetitions',d:'30 s per stimulus',c:'Three conditioned reflexes to acid (buzzer, metronome, tactile)',a:'Dog (Babkin)',o:'Extinguishing the medium-strength metronome reflex fully extinguished the weaker tactile reflex; the stronger buzzer reflex stayed partly active',k:'Qualitative',src:'S6',sec:'Lecture IV, pp. 55–56',og:'3-minute intervals; 30 s stimuli'},
+
+/* E14 — Perelzweig compound */
+{e:'E14',s:'Thermal component (0 °C) of a tactile + thermal compound',t:'CS (compound)',v:3,u:'repetitions',m:'Unreinforced repetitions of the thermal component',d:'1 min per application',c:'Compound CS built on the defence reflex to acid',a:'Dog (Perelzweig)',o:'Three unreinforced applications of the ineffective thermal component completely extinguished the tactile component and nearly extinguished the compound',k:'Qualitative',src:'S6',sec:'Lecture IV, pp. 56–57',og:'0 °C; 3 repetitions; 1 min'},
+
+/* E15 — recovery times */
+{key:'rc_30',e:'E15',s:'Meat powder shown at a distance',t:'CS',v:30,vh:60,u:'min',m:'Spontaneous recovery time',tr:'After extinction to zero',c:'Control experiments',a:'Dogs (natural alimentary reflex)',o:'Reflex recovers its initial value spontaneously in about half an hour to one hour',src:'S6',sec:'Lecture IV, p. 62',og:'between a half and one hour'},
+{e:'E15',s:'Various extinguished conditioned reflexes',t:'CS',m:'Spontaneous recovery time',c:'Depends on depth of extinction and on the animal',o:'Recovery time may vary from a few minutes to a number of hours',k:'Qualitative',src:'S6',sec:'Lecture IV, p. 58',og:'from a few minutes to a number of hours'},
+{key:'rc_acid',e:'E15',s:'Weak acid solution in mouth, then meat powder',t:'UCS → CS',v:5,u:'min',m:'Duration of acid-induced secretion before testing',tr:'Immediately after acid secretion',c:'Meat-powder reflex extinguished to zero just before',a:'Dog',o:'Conditioned alimentary reflex almost completely restored, though nothing like half an hour had passed',k:'Qualitative',src:'S6',sec:'Lecture IV, p. 62',og:'about five minutes; almost completely restored'},
+
+/* E16 — Zavadsky */
+{key:'za_430',e:'E16',s:'Meat powder after acid-induced secretion',t:'CS',v:430,u:'s',m:'Interval between end of acid secretion and test',tr:'Experiment 1',c:'Extinguished alimentary reflex, two glands recorded',a:'Dog (Zavadsky)',o:'Minimal restoration: only one gland showed activity',k:'Qualitative',src:'S6',sec:'Lecture IV, p. 64',og:'7 minutes 10 seconds',x:'Converted to seconds: 7 × 60 + 10 = 430 s; response values are in a table image'},
+{key:'za_40',e:'E16',s:'Meat powder after acid-induced secretion',t:'CS',v:40,u:'s',m:'Interval between end of acid secretion and test',tr:'Experiment 2',c:'Extinguished alimentary reflex, two glands recorded',a:'Dog (Zavadsky)',o:'Considerable restoration involving both glands',k:'Qualitative',src:'S6',sec:'Lecture IV, p. 64',og:'40 seconds',x:'Response values are in a table image'},
+{e:'E16',s:'Tactile and auditory extra stimuli; experimenter entering the room',t:'Extra stimulus',m:'Restoration of extinguished reflex',c:'Another dog (Zavadsky)',a:'Another dog',o:'Extinguished reflex was restored during the extra stimulus and its after-effect; the restoration lasted only a few minutes',k:'Qualitative',src:'S6',sec:'Lecture IV, pp. 64–65',og:'restoration lasts only a few minutes'},
+
+/* E17 — Kasherininova */
+{key:'ka_cs',e:'E17',s:'Tactile stimulation of the skin (CS for the defence reflex to acid), applied singly',t:'CS',v:29,u:'drops',m:'Salivary secretion',d:'1 min',tr:'Single test',c:'Positive conditioned stimulus alone',a:'Dog (Kasherininova)',o:'Conditioned stimulus alone evoked 29 drops',src:'S7',sec:'Lecture V, p. 72',og:'29 drops during one minute'},
+{key:'ka_inh',e:'E17',s:'Tactile + metronome (inhibitory combination, never reinforced)',t:'Inhibitory combination',v:3,u:'drops',m:'Salivary secretion',d:'1 min',tr:'25th application',c:'Conditioned inhibition',a:'Dog (Kasherininova)',o:'Only 3 drops at the 25th application of the combination',src:'S7',sec:'Lecture V, p. 72',og:'3 drops during one minute'},
+{key:'ka_met',e:'E17',s:'Metronome alone',t:'CS (2nd order)',v:8,u:'drops',m:'Salivary secretion',d:'not stated',tr:'After 34 repetitions of the inhibitory combination',c:'Metronome had no excitatory effect before joining the combination',a:'Dog (Kasherininova)',o:'Metronome alone elicited 8 drops; Pavlov reads this as second-order excitation',src:'S7',sec:'Lecture V, p. 72',og:'8 drops',flag:'Duration of this reading not stated'},
+{key:'ka_r',e:'E17',s:'Inhibitory combination vs tactile alone',t:'Inhibitory combination',v:+(3/29).toFixed(3),u:'ratio',m:'Combination ÷ CS alone (derived)',c:'Dashboard calculation',k:'Derived',o:'Response to the combination as a fraction of the response to the stimulus alone',src:'S7',sec:'Lecture V, p. 72 (from {ka_cs}, {ka_inh})',x:'3 ÷ 29 = 0.103 (both per 1 min)'},
+
+/* E18 — Chebotareva */
+{key:'ch_b1',e:'E18',s:'Metronome (CS) before inhibitory combination',t:'CS',v:6,u:'drops',m:'Salivary secretion',tr:'Experiment 1: before',c:'Rotating object as conditioned inhibitor',a:'Dog (Chebotareva)',o:'Reflex of considerable strength before the combination',src:'S7',sec:'Lecture V, p. 80',og:'6 drops'},
+{key:'ch_a1',e:'E18',s:'Metronome (CS) after one inhibitory combination',t:'CS',v:3,u:'drops',m:'Salivary secretion',tr:'Experiment 1: tested 1½ min after',c:'After a single application of the inhibitory combination',a:'Dog (Chebotareva)',o:'Reflex diminished by half',src:'S7',sec:'Lecture V, p. 80',og:'3 drops; 1½ minutes after'},
+{key:'ch_b2',e:'E18',s:'Metronome (CS) before inhibitory combination',t:'CS',v:8,u:'drops',m:'Salivary secretion',tr:'Experiment 2 (next day): before',c:'Rotating object as conditioned inhibitor',a:'Dog (Chebotareva)',o:'Reflex before the combinations',src:'S7',sec:'Lecture V, p. 80',og:'8 drops'},
+{key:'ch_a2',e:'E18',s:'Metronome (CS) after two inhibitory combinations',t:'CS',v:2,u:'drops',m:'Salivary secretion',tr:'Experiment 2: tested 5½ min after',c:'After two successive applications of the inhibitory combination',a:'Dog (Chebotareva)',o:'Reflex diminished by three-quarters',src:'S7',sec:'Lecture V, p. 80',og:'2 drops; 5½ minutes after'},
+{key:'ch_d1',e:'E18',s:'Metronome (CS)',t:'CS',v:-50,u:'%',m:'Change in secretion (derived)',tr:'Experiment 1',c:'Dashboard calculation',k:'Derived',o:'Reduction after one inhibitory combination; matches the “by half” stated by Pavlov',src:'S7',sec:'Lecture V, p. 80 (from {ch_b1}, {ch_a1})',x:'(3 − 6) ÷ 6 × 100 = −50%'},
+{key:'ch_d2',e:'E18',s:'Metronome (CS)',t:'CS',v:-75,u:'%',m:'Change in secretion (derived)',tr:'Experiment 2',c:'Dashboard calculation',k:'Derived',o:'Reduction after two inhibitory combinations; matches the “three-quarters” stated by Pavlov',src:'S7',sec:'Lecture V, p. 80 (from {ch_b2}, {ch_a2})',x:'(2 − 8) ÷ 8 × 100 = −75%'},
+
+/* E19 — Nikolaev after-effect duration */
+{key:'ni_20',e:'E19',s:'Rotating object (CS) after inhibitory combination (tone)',t:'CS',v:20,u:'min',m:'Duration of inhibitory after-effect (lower bound)',tr:'First experiment',c:'Before long practice',a:'Dog (Nikolaev)',o:'After-effect obvious for over 20 minutes',src:'S7',sec:'Lecture V, p. 80',og:'over 20 minutes',x:'“over 20 min” stored as 20 (lower bound)'},
+{key:'ni_35',e:'E19',s:'Rotating object (CS) after inhibitory combination (tone)',t:'CS',v:3.5,u:'min',m:'Time at which the after-effect was absent',tr:'Six months later',c:'After continual practice',a:'Dog (Nikolaev)',o:'After-effect absent as soon as 3½ minutes after a single application',src:'S7',sec:'Lecture V, p. 80',og:'3½ minutes',x:'3½ printed as 3.5'},
+
+/* E20 — Mishtovt */
+{key:'mi_30',e:'E20',s:'Metronome (CS to acid) + thermal stimulus 4–5 °C',t:'Inhibitory combination',v:30,u:'applications',m:'Applications before first sign of inhibition',tr:'30th application',c:'Thermal additional stimulus at 4–5 °C',a:'Dog (Mishtovt)',o:'First indication of conditioned inhibition appeared only after the 30th application',src:'S7',sec:'Lecture V, p. 74',og:'30th application'},
+{key:'mi_145',e:'E20',s:'Metronome (CS to acid) + thermal stimulus 4–5 °C',t:'Inhibitory combination',v:145,u:'applications',m:'Applications without complete inhibition',tr:'145 applications',c:'Thermal additional stimulus at 4–5 °C',a:'Dog (Mishtovt)',o:'Inhibition not yet complete even after 145 applications',src:'S7',sec:'Lecture V, p. 74',og:'145 applications'},
+{key:'mi_12',e:'E20',s:'Metronome (CS to acid) + thermal stimulus 1 °C',t:'Inhibitory combination',v:12,u:'applications',m:'Applications until complete inhibition',tr:'12 repetitions',c:'Thermal additional stimulus at 1 °C; same dog four months later',a:'Dog (Mishtovt)',o:'Only twelve repetitions were needed to establish complete inhibition',src:'S7',sec:'Lecture V, pp. 74–75',og:'12 repetitions'},
+
+/* E21 — Frolov hooter */
+{key:'fh',e:'E21',s:'Motor-car hooter (10 s) before the metronome',t:'Inhibitory combination',v:20,u:'s',m:'Longest pause tested between hooter and metronome',d:'Hooter 10 s',c:'Metronome applied after a 10 s pause (then 20 s), always unreinforced',a:'Dog (Frolov)',o:'The reflex diminished gradually after repeated combinations, and the diminution persisted with a 20 s pause; the table is an image',k:'Qualitative',src:'S7',sec:'Lecture V, pp. 69–70',og:'10 s hooter; 10 s then 20 s pause'},
+
+/* E22 — Speransky */
+{key:'sp1_1',e:'E22',s:'Metronome (reinforced)',t:'CS',v:12,u:'drops',m:'Salivary secretion',d:'isolated action (30 s stated for acoustic reflexes)',tr:'Day 1: application 1 of 12',c:'10-minute intervals between applications; each reinforced',a:'Dog (Speransky)',o:'First application of twelve',src:'S8',sec:'Lecture XIV, p. 247',og:'12 drops'},
+{key:'sp1_2',e:'E22',s:'Metronome (reinforced)',t:'CS',v:11,u:'drops',m:'Salivary secretion',d:'isolated action (30 s stated for acoustic reflexes)',tr:'Day 1: application 2 of 12',c:'10-minute intervals; each reinforced',a:'Dog (Speransky)',o:'Second application',src:'S8',sec:'Lecture XIV, p. 247',og:'11 drops'},
+{key:'sp1_11',e:'E22',s:'Metronome (reinforced)',t:'CS',v:9,u:'drops',m:'Salivary secretion',d:'isolated action (30 s stated for acoustic reflexes)',tr:'Day 1: application 11 of 12',c:'10-minute intervals; each reinforced',a:'Dog (Speransky)',o:'One of the last two applications',src:'S8',sec:'Lecture XIV, p. 247',og:'9 drops',x:'“last two” read as applications 11 and 12'},
+{key:'sp1_12',e:'E22',s:'Metronome (reinforced)',t:'CS',v:9,u:'drops',m:'Salivary secretion',d:'isolated action (30 s stated for acoustic reflexes)',tr:'Day 1: application 12 of 12',c:'10-minute intervals; each reinforced',a:'Dog (Speransky)',o:'Last application; Pavlov states a 25% diminution from repetition alone',src:'S8',sec:'Lecture XIV, p. 247',og:'9 drops; diminution by 25%',x:'“last two” read as applications 11 and 12'},
+{key:'sp2_1',e:'E22',s:'Metronome (reinforced)',t:'CS',v:11,u:'drops',m:'Salivary secretion',tr:'Day 2: stimulation 1',c:'Interval between stimuli only 1½ min; each reinforced',a:'Dog (Speransky)',o:'Reflex on the first stimulation',src:'S8',sec:'Lecture XIV, p. 247',og:'11 drops'},
+{key:'sp2_3',e:'E22',s:'Metronome (reinforced)',t:'CS',v:4.5,u:'drops',m:'Salivary secretion',tr:'Day 2: stimulation 3',c:'1½-minute intervals',a:'Dog (Speransky)',o:'Diminution by 60% stated by Pavlov',src:'S8',sec:'Lecture XIV, p. 247',og:'4½ drops (diminution by 60%)',x:'4½ printed as 4.5'},
+{key:'sp2_8',e:'E22',s:'Metronome (reinforced)',t:'CS',v:2,u:'drops',m:'Salivary secretion',tr:'Day 2: stimulation 8',c:'1½-minute intervals',a:'Dog (Speransky)',o:'Diminution by 82% stated by Pavlov',src:'S8',sec:'Lecture XIV, p. 247',og:'2 drops (diminution by 82%)'},
+{key:'sp2_22',e:'E22',s:'Metronome (reinforced)',t:'CS',v:1,u:'drops',m:'Salivary secretion',tr:'Day 2: stimulation 22',c:'1½-minute intervals; fluctuations of 2, 5 and 7 drops between stimulations 8 and 22 (trial numbers not stated)',a:'Dog (Speransky)',o:'Only one drop on the 22nd stimulation',src:'S8',sec:'Lecture XIV, p. 247',og:'1 drop'},
+{key:'sp2_0',e:'E22',s:'Metronome (reinforced)',t:'CS',v:0,u:'drops',m:'Salivary secretion',tr:'Day 2: after the 22nd stimulation (number not stated)',c:'1½-minute intervals; the dog also refused food after the last three stimuli',a:'Dog (Speransky)',o:'No secretion at all',src:'S8',sec:'Lecture XIV, p. 247',og:'no secretion'},
+{key:'sp2_vis',e:'E22',s:'Increased room illumination (visual CS)',t:'CS',v:2.5,u:'drops',m:'Salivary secretion',tr:'1½ min after the last metronome stimulation',c:'Weaker visual stimulus applied after the metronome reflex reached zero',a:'Dog (Speransky)',o:'Visual reflex still present; the dog took the food',src:'S8',sec:'Lecture XIV, p. 247',og:'2½ drops',x:'2½ printed as 2.5'},
+{key:'sp3_1',e:'E22',s:'Metronome (reinforced)',t:'CS',v:6.5,u:'drops',m:'Salivary secretion',tr:'Day 3: 1st stimulus of the session',c:'Original 10-minute intervals restored; stimuli in fixed order',a:'Dog (Speransky)',o:'Metronome applied first in the session',src:'S8',sec:'Lecture XIV, p. 247',og:'6½ drops',x:'6½ printed as 6.5'},
+{key:'sp3_5',e:'E22',s:'Metronome (reinforced)',t:'CS',v:1.5,u:'drops',m:'Salivary secretion',tr:'Day 3: 5th stimulus of the session',c:'Second metronome application of the session',a:'Dog (Speransky)',o:'Secretion only 1½ drops',src:'S8',sec:'Lecture XIV, p. 248',og:'1½ drops',x:'1½ printed as 1.5'},
+{key:'sp3_9',e:'E22',s:'Metronome (reinforced)',t:'CS',v:0,u:'drops',m:'Salivary secretion',tr:'Day 3: 9th stimulus of the session',c:'Third metronome application of the session',a:'Dog (Speransky)',o:'No secretion at all',src:'S8',sec:'Lecture XIV, p. 248',og:'no secretion'},
+{key:'sp_d1',e:'E22',s:'Metronome (reinforced)',t:'CS',v:+(((4.5-11)/11)*100).toFixed(1),u:'%',m:'Change vs stimulation 1 (derived)',tr:'Day 2: stimulation 3',c:'Dashboard calculation',k:'Derived',o:'Reduction relative to the first stimulation; Pavlov states 60%',src:'S8',sec:'Lecture XIV, p. 247 (from {sp2_1}, {sp2_3})',x:'(4.5 − 11) ÷ 11 × 100 = −59.1%'},
+{key:'sp_d2',e:'E22',s:'Metronome (reinforced)',t:'CS',v:+(((2-11)/11)*100).toFixed(1),u:'%',m:'Change vs stimulation 1 (derived)',tr:'Day 2: stimulation 8',c:'Dashboard calculation',k:'Derived',o:'Reduction relative to the first stimulation; Pavlov states 82%',src:'S8',sec:'Lecture XIV, p. 247 (from {sp2_1}, {sp2_8})',x:'(2 − 11) ÷ 11 × 100 = −81.8%'},
+{key:'sp_rec',e:'E22',s:'Metronome',t:'CS',m:'Recovery of the reflex',tr:'Next day and third day after',c:'After the decline produced by frequent stimulation',a:'Dog (Speransky)',o:'Reflex restored to usual intensity on the following day; cortical elements almost entirely restored on the third day',k:'Qualitative',src:'S8',sec:'Lecture XIV, pp. 248–249',og:'next day; third day'},
+
+/* E23 — Solovaichik */
+{key:'sv6',e:'E23',s:'Hissing sound',t:'CS',v:10,u:'drops',m:'Salivary secretion',d:'30 s',tr:'Application 6',c:'New reflex, reinforced; only 11 reinforcements in total',a:'Dog (Solovaichik)',o:'New conditioned reflex developing quickly',src:'S8',sec:'Lecture XIV, p. 243',og:'10 drops'},
+{key:'sv7',e:'E23',s:'Hissing sound',t:'CS',v:8,u:'drops',m:'Salivary secretion',d:'30 s',tr:'Application 7',c:'New reflex, reinforced',a:'Dog (Solovaichik)',o:'Secretion during 30 s',src:'S8',sec:'Lecture XIV, p. 243',og:'8 drops'},
+{key:'sv8',e:'E23',s:'Hissing sound',t:'CS',v:13,u:'drops',m:'Salivary secretion',d:'30 s',tr:'Application 8',c:'New reflex, reinforced',a:'Dog (Solovaichik)',o:'Highest value of this series',src:'S8',sec:'Lecture XIV, p. 243',og:'13 drops'},
+{key:'sv9',e:'E23',s:'Hissing sound',t:'CS',v:9,u:'drops',m:'Salivary secretion',d:'30 s',tr:'Application 9',c:'New reflex, reinforced',a:'Dog (Solovaichik)',o:'Secretion during 30 s',src:'S8',sec:'Lecture XIV, p. 243',og:'9 drops'},
+{key:'sv10',e:'E23',s:'Hissing sound',t:'CS',v:9,u:'drops',m:'Salivary secretion',d:'30 s',tr:'Application 10',c:'New reflex, reinforced',a:'Dog (Solovaichik)',o:'Secretion during 30 s',src:'S8',sec:'Lecture XIV, p. 243',og:'9 drops'},
+{key:'sv11',e:'E23',s:'Hissing sound',t:'CS',v:10.5,u:'drops',m:'Salivary secretion',d:'30 s',tr:'Application 11',c:'New reflex, reinforced; last of the 11 reinforcements',a:'Dog (Solovaichik)',o:'Secretion during 30 s',src:'S8',sec:'Lecture XIV, p. 243',og:'10½ drops',x:'10½ printed as 10.5'},
+{key:'sv_mean',e:'E23',s:'Hissing sound',t:'CS',v:+((10+8+13+9+9+10.5)/6).toFixed(2),u:'drops',m:'Mean of applications 6–11 (derived)',d:'30 s',c:'Dashboard calculation',k:'Derived',o:'Arithmetic mean of the six printed values',src:'S8',sec:'Lecture XIV, p. 243 (from {sv6}–{sv11})',x:'(10 + 8 + 13 + 9 + 9 + 10.5) ÷ 6 = 9.92 drops/30 s'},
+{key:'sv_old',e:'E23',s:'Established alimentary conditioned reflexes of the same dog',t:'CS',v:20,u:'drops',m:'Salivary secretion (lower bound)',d:'30 s',c:'Strongly developed reflexes',a:'Dog (Solovaichik)',o:'Each of the old reflexes gave upwards of 20 drops',src:'S8',sec:'Lecture XIV, p. 243',og:'upwards of 20 drops',x:'“upwards of 20” stored as 20 (lower bound)'},
+{key:'sv_54',e:'E23',s:'Hissing sound superimposed on the unconditioned stimulus',t:'CS',v:54,u:'applications',m:'Superimpositions',d:'32 days',tr:'54 applications over 32 successive days',c:'CS applied after the effect of the UCS had appeared',a:'Dog (Solovaichik)',o:'Result of the test after the 54th superimposition is in a table image (not transcribed)',k:'Qualitative',src:'S8',sec:'Lecture XIV, p. 243',og:'54 applications in 32 days'},
+
+/* E24 — Shishlo */
+{key:'sh_27',e:'E24',s:'Tactile stimulus',t:'CS',v:27,u:'stimulations',m:'Stimulations until first appearance of the reflex',tr:'27th stimulation',c:'Food usually delayed 10 s; 30 s delay on rare occasions',a:'Dog (Shishlo)',o:'Reflex first appeared at the 27th stimulation',src:'S8',sec:'Lecture XIV, p. 235',og:'27th stimulation'},
+{key:'sh_179',e:'E24',s:'Tactile stimulus',t:'CS',v:8,u:'drops',m:'Salivary secretion',d:'1 min',tr:'After 179 stimulations (within five weeks)',c:'Reflex became stable',a:'Dog (Shishlo)',o:'Stable at 8 drops per minute',src:'S8',sec:'Lecture XIV, p. 235',og:'8 drops during one minute; 179 stimulations'},
+{key:'sh_th4',e:'E24',s:'Thermal stimulus, 45 °C',t:'CS',v:4,u:'drops',m:'Salivary secretion',tr:'12th stimulation',c:'Normal delay 10 s; 30 s delay introduced at this test',a:'Dog (Shishlo)',o:'A secretion of 4 drops was obtained',src:'S8',sec:'Lecture XIV, p. 236',og:'4 drops'},
+{key:'sh_th1',e:'E24',s:'Thermal stimulus, 45 °C',t:'CS',v:1,u:'drops',m:'Salivary secretion',d:'1 min delay',tr:'33rd test',c:'Delay specially prolonged to one minute',a:'Dog (Shishlo)',o:'Only one drop of secretion; reflex had diminished in strength',src:'S8',sec:'Lecture XIV, p. 236',og:'1 drop'},
+
+/* E25 — Kreps */
+{key:'kp_d',e:'E25',s:'Metronome 144 beats/min (differentiation) vs 132 beats/min (positive)',t:'CS',v:3,u:'drops',m:'Salivary secretion to the differentiated rate',tr:'33 repetitions within 13 days',c:'After delayed reflexes were made simultaneous (food 1 s after the CS)',a:'Dog (Kreps)',o:'Differentiation became unsatisfactory: 3 drops against 6–7 for the positive reflex',src:'S8',sec:'Lecture XIV, p. 245',og:'3 drops vs 6 to 7'},
+{key:'kp_100',e:'E25',s:'Lamp flashes as conditioned inhibitor',t:'Inhibitory combination',v:100,u:'applications',m:'Applications without re-establishing the inhibition',d:'36 days',tr:'100 applications over 36 days',c:'Simultaneous reinforcement (1 s delay)',a:'Dog (Kreps)',o:'Conditioned inhibition could not be re-established',src:'S8',sec:'Lecture XIV, p. 245',og:'100 applications during 36 days'},
+
+/* E26 — Petrova */
+{e:'E26',s:'Metronome',t:'CS',v:10,vh:30,u:'s',m:'Delay before reinforcement',c:'Reflex delayed 10 s vs 30 s',a:'Dog (Petrova)',o:'With 10 s delay the reflex stayed constant; once the isolated action was prolonged to 30 s it became inconstant and fell to zero within a single experiment (tables are images)',k:'Qualitative',src:'S8',sec:'Lecture XIV, pp. 236–237',og:'10 s vs 30 s delay'},
+
+/* E27 — Nobel Lecture */
+{key:'nb_24',e:'E27',s:'Bread vs meat/milk as food protein',t:'UCS',v:2,vh:4,u:'× (ratio)',m:'Gastric-gland output for a given amount of protein',c:'Same quantity of protein given as bread, meat or milk',o:'Glands produce two to four times as much with bread protein than with meat or milk protein',src:'S1',sec:'Nobel Lecture (1904), physiology of digestion',og:'from two to four times'},
+{e:'E27',s:'Sham feeding (food falls out of the oesophagus)',t:'UCS',m:'Gastric juice',c:'Dogs with oesophagus cut and stomach fistula',o:'Secretion very abundant: many hundreds of cubic centimetres of gastric juice; no exact figure given',k:'Qualitative',src:'S1',sec:'Nobel Lecture (1904)',og:'many hundreds of cubic centimetres'},
+{e:'E27',s:'Sight of food (“appetite juice”)',t:'CS',m:'Gastric juice',c:'Nervous and excitable vs sedate dogs',o:'Nervous dogs secrete several hundred, quiet dogs only a few cubic centimetres; no exact figures given',k:'Qualitative',src:'S1',sec:'Nobel Lecture (1904)',og:'several hundred vs a few cubic centimetres'},
+{key:'nb_h',e:'E27',s:'Bread placed in the stomach without the dog noticing',t:'UCS',v:1,u:'h',m:'Duration with no gastric secretion',d:'1 h',c:'Appetite not aroused',o:'Bread may remain unchanged for a whole hour without even the slightest secretion',src:'S1',sec:'Nobel Lecture (1904)',og:'a whole hour'},
+{e:'E27',s:'Sight of bread, milk, acid shown repeatedly from a distance',t:'CS',m:'Salivary reaction',c:'Stimulation repeated from a distance',o:'The reaction grows weaker and finally drops to zero; shorter intervals bring zero sooner; milk ceasing to act does not remove the action of bread, nor bread that of acid',k:'Qualitative',src:'S1',sec:'Nobel Lecture (1904)',og:'drops to zero; shorter intervals, faster'},
+{e:'E27',s:'Resting, eating bread or other food, acid in the mouth',t:'Other',m:'Recovery of a lost distant reaction',c:'After the reaction to the sight of bread had been lost',o:'Recovers after a long rest of several hours; is restored at any time by letting the dog eat, and also by acid in the mouth; greater salivary activity gives fuller restoration',k:'Qualitative',src:'S1',sec:'Nobel Lecture (1904)',og:'several hours of rest; eating restores'},
+{key:'nb_y',e:'E27',s:'—',t:'Other',v:7,vh:8,u:'years',m:'Longevity of sham-feeding dogs (lower bound)',c:'Dogs with oesophagus cut and stomach fistula',o:'Animals lived more than 7–8 years without deviation from normal health',src:'S1',sec:'Nobel Lecture (1904)',og:'more than 7-8 years',x:'“more than 7–8 years” stored as a 7–8 range; true value is above it'}
+];
+const OBS = RAW.map((r,i)=>{ const o=Object.assign({},D0,r); o.id='O'+String(i+1).padStart(3,'0'); if(o.v===undefined) o.v=null; if(o.vh===undefined) o.vh=null; if(!o.u) o.u='—'; return o; });
+const byKey = Object.fromEntries(OBS.filter(o=>o.key).map(o=>[o.key,o]));
+OBS.forEach(o=>{ o.sec=o.sec.replace(/\{(\w+)\}/g,(m,k)=>byKey[k]?byKey[k].id:m); });
+const V = k => { if(!(k in byKey)) throw new Error('missing data key '+k); return byKey[k].v; };
+
+/* =====================================================================
+   EXPERIMENTS
+   ===================================================================== */
+const EXPS = [
+{id:'E01',g:'Conditioned Reflexes (1927)',n:'Lecture II demonstrations: latency and salivary response',src:'S4',sec:'Lecture II, pp. 22–24',desc:'Demonstrações com um cão com fístula salivar: resposta ao metrônomo, à visão do alimento e ao alimento na boca.',animal:'Dog (salivary fistula)',stim:'Metronome; food shown; food in mouth',resp:'Salivary secretion and latent period',metric:'Drops; latent period',unit:'drops; s',dur:'45 s (metronome); 15 s (food shown)',rep:'Not stated (single demonstrations)',result:'Metronome: latency 9 s, 11 drops in 45 s. Food shown: latency 5 s, 6 drops in 15 s. Food in mouth: latency 1–2 s. Baseline: 0 drops in 1–2 h.',method:'Um cão com o ducto salivar transplantado para a pele; gotas contadas ou medidas em tubo graduado. Laboratório isolado para excluir estímulos externos.',lim:'Demonstrações únicas; não está dito se os dois estímulos foram testados no mesmo cão; número de pareamentos anteriores não informado.'},
+{id:'E02',g:'Conditioned Reflexes (1927)',n:'Krestovnikov: order of stimuli and formation of a conditioned reflex',src:'S4',sec:'Lecture II, pp. 27–28',desc:'Compara a ordem dos estímulos: neutro antes do incondicionado (forward) versus depois (backward).',animal:'Dogs (five dogs in the summary; cases on different dogs)',stim:'Vanillin, amyl acetate, bell, rotating object, buzzer; acid or food as UCS',resp:'Whether a conditioned reflex was established',metric:'Combinations applied',unit:'applications / combinations',dur:'Acid preceded the odour by 5–10 s in the backward case',rep:'427, 20, 374, 5 and 1 combinations (see table)',result:'Backward order: 427 and 374 combinations without a conditioned reflex. Forward order: established after 20, 5 and 1 combinations.',method:'O estímulo neutro foi aplicado antes ou depois do incondicionado; a secreção e a reação motora foram observadas.',lim:'Estímulos e cães diferentes em cada caso; não é possível comparar contagens entre linhas como se fossem o mesmo experimento.'},
+{id:'E03',g:'Conditioned Reflexes (1927)',n:'Solomonov: minimum stimulus strength (thermal)',src:'S4',sec:'Lecture II, p. 31',desc:'Mostra que existe uma intensidade mínima abaixo da qual um estímulo não se torna condicionado.',animal:'Dog (Solomonov)',stim:'Thermal stimulus on the skin',resp:'Whether an alimentary CS formed',metric:'Stimulus temperature',unit:'°C',dur:'Not stated',rep:'Not stated',result:'45 °C became an alimentary conditioned stimulus; 38–39 °C (about 2 °C above skin temperature) was ineffective.',method:'Estímulo térmico aplicado à pele como sinal para o reflexo alimentar.',lim:'Não há número de tentativas nem medida de secreção no texto.'},
+{id:'E04',g:'Conditioned Reflexes (1927)',n:'Zitovich: puppies reared on milk',src:'S4',sec:'Lecture II, pp. 22–23',desc:'Demonstra que a salivação à visão do alimento é adquirida, não inata.',animal:'Young dogs (number not stated)',stim:'Sight of bread or meat',resp:'Salivary secretion',metric:'Qualitative',unit:'—',dur:'Not stated',rep:'“Several occasions” of eating',result:'No secretion on seeing food before eating; secretion after the puppies had eaten bread and meat on several occasions.',method:'Filhotes alimentados só com leite receberam fístulas salivares e depois foram expostos a alimento sólido.',lim:'Sem números; os dados quantitativos não constam do texto.'},
+{id:'E05',g:'Conditioned Reflexes (1927)',n:'Frolov: second-order conditioned reflex',src:'S5',sec:'Lecture III, p. 34',desc:'Um quadrado preto foi associado ao metrônomo (já condicionado) para criar um reflexo de segunda ordem.',animal:'Dog with two primary CSs (metronome, electric bell)',stim:'Black square, then metronome',resp:'Salivary secretion',metric:'Drops',unit:'drops',dur:'25 s',rep:'10th presentation of the square',result:'5½ drops (2.5 + 3) in 25 s at an early stage of the second-order reflex.',method:'Quadrado por 10 s, intervalo de 15 s e metrônomo por 30 s, sem alimento.',lim:'Um único valor no texto; a tabela completa está em imagem.'},
+{id:'E06',g:'Conditioned Reflexes (1927)',n:'Zeliony: sudden stop vs gradual damping of a tone',src:'S5',sec:'Lecture III, p. 39',desc:'Mostra que a taxa de mudança do estímulo importa: a interrupção brusca é sinal, o amortecimento lento não.',animal:'Dog (Zeliony)',stim:'Pneumatic tuning fork D-2',resp:'Salivary secretion',metric:'Drops',unit:'drops',dur:'Test interval (length not stated); damping 12 min',rep:'Not stated',result:'Sudden stop: 32 drops. Gradual damping over 12 minutes: 0 drops.',method:'A parada brusca do diapasão foi transformada em sinal alimentar; o som foi depois amortecido ao longo de 12 minutos.',lim:'A duração do intervalo de teste não é informada.'},
+{id:'E07',g:'Conditioned Reflexes (1927)',n:'Feokritova: time interval as conditioned stimulus',src:'S5',sec:'Lecture III, p. 41',desc:'O próprio tempo decorrido desde a última refeição funciona como estímulo condicionado.',animal:'Dog (Feokritova)',stim:'Time since feeding; metronome',resp:'Salivation and alimentary motor reaction',metric:'Feeding interval',unit:'min',dur:'30 min cycle',rep:'Not stated (“a good number of times”)',result:'With feeding omitted, the reaction appeared at about the 30th minute, sometimes 1–2 min late. A metronome tested at the 5th or 8th minute produced no reflex.',method:'Alimento a cada 30 minutos; em controles, uma refeição era omitida.',lim:'Tabela de resultados em imagem; não transcrita.'},
+{id:'E08',g:'Conditioned Reflexes (1927)',n:'Krylov: conditioned reactions to morphine injection',src:'S5',sec:'Lecture III, pp. 35–36',desc:'Os preparativos da injeção passaram a provocar os sintomas da droga.',animal:'Dogs (Krylov)',stim:'Preliminaries of the morphine injection',resp:'Nausea, salivation, vomiting, sleep',metric:'Days of injections',unit:'days',dur:'5–6 days',rep:'Regular injections',result:'After 5–6 days the preliminaries alone evoked the symptoms.',method:'Injeções hipodérmicas regulares de morfina.',lim:'Descrição qualitativa; sem medida de secreção.'},
+{id:'E09',g:'Conditioned Reflexes (1927)',n:'Lecture IV demonstration: extinction and spontaneous recovery',src:'S6',sec:'Lecture IV, pp. 48–51, 58–59',desc:'Metrônomo repetido sem alimento; após 23 minutos, nova medida mostra recuperação espontânea.',animal:'Dog (same as the Lecture II metronome demonstration)',stim:'Metronome, unreinforced',resp:'Salivary secretion and latent period',metric:'Drops; latent period',unit:'drops; s',dur:'30 s stimulus; repetition every 2 min',rep:'Number of repetitions not stated (table image)',result:'Rise from 5 to 7 drops at the 5th repetition (small disturbance). Last reading: 13 s latency, 3 drops. After 23 min: 5 s latency, 6 drops.',method:'Metrônomo por 30 s a cada 2 minutos, sem reforço; registro das gotas e do período latente.',lim:'A Tabela 5 (série completa) é uma imagem e não foi transcrita; apenas valores citados no texto estão no painel.'},
+{id:'E10',g:'Conditioned Reflexes (1927)',n:'Babkin: extinction and unconditioned strength (quassia, acid)',src:'S6',sec:'Lecture IV, pp. 51–52',desc:'Relaciona a rapidez da extinção à intensidade do reflexo incondicionado.',animal:'Dog (Babkin)',stim:'1% quassia extract; 0.1% HCl; both presented at a distance as CS',resp:'Salivary secretion',metric:'Volume',unit:'c.c.',dur:'1 min (conditioned reflexes)',rep:'Means of 10 (quassia) and 5 (acid) experiments',result:'Quassia: UCR 1.71 c.c.; CR 0.3 c.c./min. Acid: CR 0.9 c.c./min; UCR value ambiguous in the transcription.',method:'Reflexos condicionados “naturais” (apresentação à distância) extintos em condições constantes.',lim:'O valor incondicionado do ácido aparece como “52 c.c.” na transcrição e foi sinalizado como conflito; a tabela de extinção é imagem.'},
+{id:'E11',g:'Conditioned Reflexes (1927)',n:'Perelzweig: secondary extinction of the unconditioned reflex',src:'S6',sec:'Lecture IV, p. 54',desc:'A extinção de reflexos condicionados pode reduzir até o reflexo incondicionado ao ácido.',animal:'Dog (Perelzweig)',stim:'Hydrochloric acid in mouth',resp:'Salivary secretion',metric:'Volume',unit:'c.c.',dur:'Not stated',rep:'Several extinctions (number not stated)',result:'6 c.c. on average before; 3.8 c.c. after several extinctions.',method:'Extinções repetidas de um reflexo de defesa condicionado tátil; depois, teste do ácido isolado.',lim:'Número de extinções e de provas não informados.'},
+{id:'E12',g:'Conditioned Reflexes (1927)',n:'Babkin: pause length and rate of extinction',src:'S6',sec:'Lecture IV, p. 52',desc:'Quanto menor a pausa entre repetições sem reforço, mais rápida a extinção.',animal:'Dog (Babkin)',stim:'Meat powder shown at a distance',resp:'Salivary secretion',metric:'Qualitative',unit:'—',dur:'1 min per presentation',rep:'Five extinction series in one day',result:'Shorter pauses gave faster extinction with usually fewer repetitions (numeric tables are images).',method:'Cinco séries de extinção no mesmo dia, com descanso e reforço com carne em pó entre elas.',lim:'Sem números no corpo do texto.'},
+{id:'E13',g:'Conditioned Reflexes (1927)',n:'Babkin: primary and secondary extinction',src:'S6',sec:'Lecture IV, pp. 54–56',desc:'A extinção de um reflexo enfraquece outros reflexos; reflexos mais fracos são afetados primeiro.',animal:'Dog (Babkin)',stim:'Buzzer, metronome, tactile (CSs to acid)',resp:'Salivary secretion',metric:'Qualitative',unit:'—',dur:'30 s per stimulus',rep:'3-minute intervals',result:'Extinguishing the medium-strength reflex (metronome) completely extinguished the weaker tactile reflex; the stronger buzzer reflex remained partly active.',method:'Metrônomo repetido em intervalos de 3 minutos sem reforço; teste dos outros dois.',lim:'Valores em tabelas de imagem.'},
+{id:'E14',g:'Conditioned Reflexes (1927)',n:'Perelzweig: compound stimulus (tactile + thermal)',src:'S6',sec:'Lecture IV, pp. 56–57',desc:'Um componente fraco, sozinho ineficaz, extingue o componente forte e o composto.',animal:'Dog (Perelzweig)',stim:'Tactile and thermal (0 °C) components',resp:'Salivary secretion',metric:'Qualitative',unit:'—',dur:'1 min per application',rep:'3 unreinforced applications of the thermal component',result:'Complete secondary extinction of the tactile component and practically complete extinction of the compound.',method:'Reflexo de defesa ao ácido com estímulo composto; componentes testados separadamente.',lim:'Valores em tabela de imagem.'},
+{id:'E15',g:'Conditioned Reflexes (1927)',n:'Spontaneous recovery times and acid-induced restoration',src:'S6',sec:'Lecture IV, pp. 58, 62',desc:'Reflexos extintos se recuperam sozinhos; o ácido na boca acelera a recuperação.',animal:'Dogs',stim:'Meat powder at a distance; weak acid in mouth',resp:'Salivary secretion',metric:'Recovery time',unit:'min',dur:'30–60 min; acid secretion ≈ 5 min',rep:'Not stated',result:'Spontaneous recovery in about 30–60 min (meat powder). After acid (≈ 5 min of secretion) the reflex was almost completely restored. Range reported: a few minutes to hours.',method:'Reflexo de carne em pó extinto até zero; teste após espera ou após ácido.',lim:'“Almost completely” é qualitativo; sem números de secreção no texto.'},
+{id:'E16',g:'Conditioned Reflexes (1927)',n:'Zavadsky: timing of acid-induced restoration',src:'S6',sec:'Lecture IV, pp. 63–65',desc:'A restauração é temporária e depende do intervalo após a secreção de ácido.',animal:'Dogs (Zavadsky)',stim:'Acid in mouth, then meat powder; tactile/auditory extra stimuli',resp:'Activity of two salivary glands',metric:'Interval; qualitative restoration',unit:'s',dur:'430 s vs 40 s',rep:'Not stated',result:'After 7 min 10 s: minimal restoration (one gland). After 40 s: considerable restoration (both glands). Extra stimuli restored the reflex for a few minutes.',method:'Dois experimentos no mesmo dia em que o reflexo extinto foi testado a intervalos diferentes após o ácido.',lim:'Valores de secreção em tabelas de imagem.'},
+{id:'E17',g:'Conditioned Reflexes (1927)',n:'Kasherininova: conditioned inhibition and second-order excitation',src:'S7',sec:'Lecture V, p. 72',desc:'Um estímulo adicional (metrônomo) inibe o reflexo tátil, mas adquire efeito excitatório de segunda ordem.',animal:'Dog (Kasherininova)',stim:'Tactile CS; metronome as additional stimulus',resp:'Salivary secretion',metric:'Drops',unit:'drops',dur:'1 min',rep:'25th and 34th applications of the combination',result:'Tactile alone: 29 drops. Combination at 25th application: 3 drops. Metronome alone after 34 repetitions: 8 drops.',method:'Combinação tátil + metrônomo nunca reforçada; estímulo tátil isolado como controle.',lim:'A duração da leitura de 8 gotas não é informada; é um caso raro, segundo Pavlov.'},
+{id:'E18',g:'Conditioned Reflexes (1927)',n:'Chebotareva: inhibitory after-effect',src:'S7',sec:'Lecture V, p. 80',desc:'O efeito inibitório persiste após a combinação e enfraquece o reflexo positivo testado depois.',animal:'Dog (Chebotareva)',stim:'Metronome (CS); rotating object (conditioned inhibitor)',resp:'Salivary secretion',metric:'Drops',unit:'drops',dur:'Test 1½ min and 5½ min after',rep:'1 and 2 applications of the combination',result:'Day 1: 6 → 3 drops. Day 2: 8 → 2 drops.',method:'Teste do CS após uma ou duas aplicações da combinação inibitória.',lim:'Um cão; dois experimentos.'},
+{id:'E19',g:'Conditioned Reflexes (1927)',n:'Nikolaev: duration of the inhibitory after-effect',src:'S7',sec:'Lecture V, p. 80',desc:'A duração do pós-efeito inibitório diminui com a prática continuada.',animal:'Dog (Nikolaev)',stim:'Rotating object (CS); tone (conditioned inhibitor)',resp:'Salivary secretion',metric:'Duration of after-effect',unit:'min',dur:'> 20 min vs 3.5 min',rep:'Six months of continual practice between experiments',result:'After-effect over 20 min at first; absent by 3.5 min six months later.',method:'Teste do CS em intervalos após uma única aplicação da combinação inibitória.',lim:'“Over 20 min” é um limite inferior.'},
+{id:'E20',g:'Conditioned Reflexes (1927)',n:'Mishtovt: intensity of the additional stimulus',src:'S7',sec:'Lecture V, pp. 74–75',desc:'Um estímulo adicional mais intenso estabelece inibição condicionada com menos repetições.',animal:'Dog (Mishtovt)',stim:'Metronome (CS to acid) + thermal stimulus',resp:'Conditioned inhibition',metric:'Applications',unit:'applications',dur:'Not stated',rep:'30th (first sign), 145 (incomplete) at 4–5 °C; 12 at 1 °C',result:'At 4–5 °C: first sign after the 30th application, incomplete after 145. At 1 °C: complete after 12 repetitions.',method:'O mesmo animal foi testado com estímulos térmicos de temperaturas diferentes, com quatro meses de intervalo.',lim:'Os testes foram feitos em épocas diferentes; 145 é um limite inferior de aplicações.'},
+{id:'E21',g:'Conditioned Reflexes (1927)',n:'Frolov: motor-car hooter as additional stimulus',src:'S7',sec:'Lecture V, pp. 69–70',desc:'Mesmo com pausa de 20 s, um estímulo adicional muito forte gera inibição condicionada.',animal:'Dog (Frolov)',stim:'Motor-car hooter (10 s), then metronome',resp:'Salivary secretion',metric:'Pause between stimuli',unit:'s',dur:'Hooter 10 s; pause 10 s then 20 s',rep:'Several combinations',result:'The reflex diminished gradually with repeated unreinforced combinations and persisted with a 20 s pause.',method:'Buzina por 10 s, pausa e metrônomo; combinação sempre sem reforço.',lim:'Valores em tabela de imagem.'},
+{id:'E22',g:'Conditioned Reflexes (1927)',n:'Speransky: repetition at 10-min vs 1½-min intervals',src:'S8',sec:'Lecture XIV, pp. 247–249',desc:'Mostra que repetições frequentes de um CS reforçado reduzem a resposta até zero e que a resposta se recupera nos dias seguintes.',animal:'Dog (Speransky)',stim:'Metronome (and other stimuli in fixed order)',resp:'Salivary secretion',metric:'Drops',unit:'drops',dur:'Isolated action (30 s stated for acoustic reflexes)',rep:'12 applications (10 min); 22+ stimulations (1½ min)',result:'Day 1: 12 → 9 drops (−25%). Day 2: 11 → 4.5 (3rd) → 2 (8th) → 1 (22nd) → 0. Day 3: 6.5 → 1.5 (5th) → 0 (9th). Restored on following days.',method:'Estímulos aplicados em intervalos de 10 min (dia 1 e 3) e de 1½ min (dia 2); todos reforçados com alimento.',lim:'Trata-se de queda sob reforço (inibição), não de extinção por omissão do alimento; flutuações de 2, 5 e 7 gotas sem número de tentativa.'},
+{id:'E23',g:'Conditioned Reflexes (1927)',n:'Solovaichik: hissing-sound reflex, applications 6–11',src:'S8',sec:'Lecture XIV, p. 243',desc:'Um novo reflexo condicionado a um som de assobio desenvolve-se rapidamente em um cão com reflexos fortes.',animal:'Dog (Solovaichik)',stim:'Hissing sound',resp:'Salivary secretion',metric:'Drops per 30 s',unit:'drops',dur:'30 s',rep:'Applications 6–11 (11 reinforcements in total)',result:'10, 8, 13, 9, 9 and 10.5 drops. Mean (derived) 9.92.',method:'Reflexo novo reforçado 11 vezes; depois o som foi sobreposto ao estímulo incondicionado por 54 aplicações em 32 dias.',lim:'O resultado após a 54ª sobreposição está em tabela de imagem; não transcrito.'},
+{id:'E24',g:'Conditioned Reflexes (1927)',n:'Shishlo: tactile vs thermal reflexes and delay',src:'S8',sec:'Lecture XIV, pp. 235–236',desc:'Compara a velocidade com que reflexos com atraso longo se tornam inibidos.',animal:'Dog (Shishlo)',stim:'Tactile; thermal 45 °C',resp:'Salivary secretion',metric:'Stimulations; drops',unit:'stimulations; drops',dur:'Delay 10 s, 30 s, 1 min',rep:'27th, 179 (tactile); 12th, 33rd (thermal)',result:'Tactile: first appeared at the 27th stimulation; stable at 8 drops/min after 179 stimulations. Thermal: 4 drops at the 12th stimulation (30 s delay); 1 drop at the 33rd test (1 min delay).',method:'Dois reflexos alimentares sucessivos no mesmo cão, com atraso normal de 10 s e atrasos prolongados ocasionais.',lim:'Condições (atraso) diferentes em cada valor; não permitem curva contínua.'},
+{id:'E25',g:'Conditioned Reflexes (1927)',n:'Kreps: simultaneous vs delayed reinforcement',src:'S8',sec:'Lecture XIV, pp. 245–246',desc:'Reforço quase simultâneo desfaz a inibição condicionada em um cão propenso à inibição.',animal:'Dog (Kreps)',stim:'Metronome 132 and 144 beats/min; lamp flashes',resp:'Salivary secretion',metric:'Drops; applications',unit:'drops; applications',dur:'36 days; 13 days',rep:'100 applications; 33 repetitions',result:'Differentiation gave 3 drops vs 6–7 for the positive rate. Inhibition could not be re-established in 100 applications over 36 days.',method:'Reflexos com atraso de 30 s foram transformados em simultâneos (alimento 1 s após o CS).',lim:'A tabela final está em imagem.'},
+{id:'E26',g:'Conditioned Reflexes (1927)',n:'Petrova: delay of 10 s vs 30 s',src:'S8',sec:'Lecture XIV, pp. 236–237',desc:'Reflexos com atraso de 30 s tornam-se inibidos rapidamente, os de 10 s permanecem estáveis.',animal:'Dog (Petrova)',stim:'Metronome',resp:'Salivary secretion',metric:'Qualitative',unit:'—',dur:'10 s vs 30 s delay',rep:'Within a single experiment',result:'10 s delay: reflex constant. 30 s delay: became inconstant and fell to zero within one experiment.',method:'Dois experimentos com dia de intervalo.',lim:'Valores em tabelas de imagem.'},
+{id:'E27',g:'Nobel Lecture (1904)',n:'Nobel Lecture 1904: quantitative statements',src:'S1',sec:'Nobel Lecture (1904)',desc:'Afirmações numéricas e quase numéricas da palestra de Pavlov sobre a digestão e a salivação à distância.',animal:'Dogs',stim:'Bread, meat, milk, acid; sight of food',resp:'Gastric and salivary secretion',metric:'Ratio; duration; volume (approximate)',unit:'× ; h ; years ; c.c. (approx.)',dur:'1 h; several hours',rep:'Not stated',result:'Bread vs meat/milk protein: 2–4×. Bread in stomach unnoticed: no secretion for 1 h. Sham feeding: many hundreds of c.c. Sight of food: several hundred vs a few c.c. Dogs lived more than 7–8 years.',method:'Cães com fístulas e alimentação simulada; estímulos apresentados à distância para observar a secreção salivar.',lim:'Não traz séries de gotas ou segundos; vários valores são aproximações (“many hundreds”).'}
+];
+const expById = Object.fromEntries(EXPS.map(e=>[e.id,e]));
+
+/* timeline events */
+const EVENTS = [
+ {y:'1849',t:'Pavlov is born in Ryazan (14 September).',s:'S2'},
+ {y:'1870',t:'Enrolls in the physics and mathematics faculty to study natural science.',s:'S3'},
+ {y:'1879',t:'Completes the course at the Academy of Medical Surgery.',s:'S3'},
+ {y:'1883',t:'Presents the doctoral thesis on the centrifugal nerves of the heart.',s:'S3'},
+ {y:'1890',t:'Invited to organize and direct the Department of Physiology at the Institute of Experimental Medicine; also Professor of Pharmacology.',s:'S3'},
+ {y:'1891–1900',t:'Bulk of the research on the physiology of digestion; development of the “chronic” experiment with fistulas.',s:'S3'},
+ {y:'1895',t:'Appointed to the Chair of Physiology (held until 1925); Glinskii’s salivary-duct fistula method is developed.',s:'S3'},
+ {y:'1897',t:'Lectures on the function of the principal digestive glands published.',s:'S3'},
+ {y:'1903',t:'Madrid congress paper: definition of conditioned and other reflexes.',s:'S3'},
+ {y:'1904',t:'Nobel Prize in Physiology or Medicine; Nobel Lecture delivered on 12 December.',s:'S2'},
+ {y:'1905',t:'Established that any external agent coinciding in time with an ordinary reflex can become a conditioned signal.',s:'S3'},
+ {y:'1927',t:'English translation of Conditioned Reflexes by G. V. Anrep, source of most numbers in this dashboard.',s:'S4'},
+ {y:'1936',t:'Pavlov dies in Leningrad (27 February).',s:'S2'}
+];
+
+/* =====================================================================
+   helpers
+   ===================================================================== */
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num = n => (n==null?'—':(Math.round(n*1000)/1000).toString());
+const fmtVal = o => o.v==null ? '—' : (o.vh!=null ? num(o.v)+'–'+num(o.vh) : num(o.v));
+const chip = id => `<button class="chip" type="button" data-src="${id}" title="${esc(SOURCES[id].title)}">${id}</button>`;
+const kindBadge = k => `<span class="kind k-${k}">${k}</span>`;
+function openSource(id){ window.open(SOURCES[id].url,'_blank','noopener'); }
+function goInspect(expId){
+  const sel=$('#inspSel'); sel.value=expId; renderInspector(expId);
+  document.getElementById('inspector').scrollIntoView();
+}
+document.addEventListener('click',e=>{
+  const c=e.target.closest('[data-src]');
+  if(c && c.dataset.src && c.classList.contains('chip')){
+    const sid=c.dataset.src;
+    const ex=EXPS.find(x=>x.src===sid);
+    goInspect(ex?ex.id:sid);
+  }
+});
+
+/* hero reference observation (values come from the dataset) */
+(function hero(){
+  const lat=V('m_lat'), dr=V('m_drops'), T=45, W=520, H=120, L=16, R=16;
+  const x=t=>L+(W-L-R)*t/T;
+  $('#heroSvg').innerHTML=
+  `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Linha do tempo de 45 segundos: secreção inicia aos ${lat} segundos e soma ${dr} gotas">
+    <line x1="${x(0)}" y1="78" x2="${x(T)}" y2="78" stroke="#AAB4C0" stroke-width="1"/>
+    ${[0,9,15,30,45].map(t=>`<line x1="${x(t)}" y1="74" x2="${x(t)}" y2="82" stroke="#AAB4C0"/><text x="${x(t)}" y="98" fill="#AAB4C0" font-size="11" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">${t}</text>`).join('')}
+    <text x="${x(T)}" y="114" fill="#AAB4C0" font-size="11" text-anchor="end" font-family="IBM Plex Sans,sans-serif">seconds</text>
+    <rect x="${x(0)}" y="60" width="${x(lat)-x(0)}" height="14" fill="none" stroke="#AAB4C0" stroke-dasharray="3 3"/>
+    <text x="${(x(0)+x(lat))/2}" y="52" fill="#AAB4C0" font-size="11" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">latent period ${lat} s</text>
+    <rect x="${x(lat)}" y="60" width="${x(T)-x(lat)}" height="14" fill="#163F6B" stroke="#FFFFFF"/>
+    <text x="${(x(lat)+x(T))/2}" y="34" fill="#FFFFFF" font-size="22" text-anchor="middle" font-family="IBM Plex Serif,Georgia,serif">${dr} drops</text>
+    <text x="${(x(lat)+x(T))/2}" y="52" fill="#F2F4F7" font-size="11" text-anchor="middle" font-family="IBM Plex Sans,sans-serif">secreted within 45 s</text>
+  </svg>`;
+})();
+
+/* =====================================================================
+   KPIs
+   ===================================================================== */
+(function kpis(){
+  const orig = OBS.filter(o=>o.k==='Original' && o.v!=null);
+  const der = OBS.filter(o=>o.k==='Derived');
+  const qual = OBS.filter(o=>o.k==='Qualitative');
+  const dropsOrig = OBS.filter(o=>o.k==='Original' && o.u==='drops' && o.v!=null);
+  const maxDrop = dropsOrig.reduce((a,b)=>b.v>a.v?b:a, dropsOrig[0]);
+  const lat = OBS.filter(o=>o.k==='Original' && o.m==='Latent period');
+  const latMin = Math.min(...lat.map(o=>o.v)), latMax = Math.max(...lat.map(o=>o.vh!=null?o.vh:o.v));
+  const csRecs = OBS.filter(o=>o.k!=='Derived'&&/^CS/.test(o.t)).length;
+  const ucsRecs = OBS.filter(o=>o.k!=='Derived'&&o.t==='UCS').length;
+  const expsWithData = new Set(OBS.map(o=>o.e)).size;
+  const cards = [
+    [Object.keys(SOURCES).length,'Sources consulted','3 Nobel Prize pages + 5 lectures of Conditioned Reflexes (1927)'],
+    [expsWithData,'Experiments documented','Each has at least one extracted record'],
+    [orig.length,'Quantitative observations','Original numeric values, preserved with their units'],
+    [qual.length,'Qualitative descriptions','Findings reported without a usable number'],
+    [der.length,'Derived calculations','Computed by the dashboard; marked “Derived”'],
+    [csRecs,'Conditioned-stimulus records','Records whose stimulus is a CS (incl. second-order, time, compound)'],
+    [ucsRecs,'Unconditioned-stimulus records','Records whose stimulus is a UCS (food, acid, quassia)'],
+    [dropsOrig.length,'Salivary measurements (drops)','Original records in drops; windows differ by experiment'],
+    [num(maxDrop.v)+' drops','Maximum recorded response',esc(expById[maxDrop.e].n)+' · '+esc(maxDrop.sec)],
+    [latMin+'–'+latMax+' s','Latent period range','From food in mouth (1–2 s) to a partly extinguished reflex (13 s)']
+  ];
+  $('#kpiGrid').innerHTML = cards.map(c=>`<div class="kpi"><div class="n">${c[0]}</div><div class="l">${c[1]}</div><div class="s">${c[2]}</div></div>`).join('');
+  $('#kpiNA').innerHTML = '<b>Não calculados:</b> média de resposta e resposta mínima. Os valores vêm de cães, estímulos e janelas de medição diferentes; uma média geral não teria significado científico. Número total de tentativas também não é somado, pois muitas fontes não informam a contagem.';
+})();
+
+/* =====================================================================
+   EXPLORER
+   ===================================================================== */
+function renderExplorer(id){
+  const list=$('#exList'); const groups=['Nobel Lecture (1904)','Conditioned Reflexes (1927)'];
+  list.innerHTML = groups.map(g=>`<div class="grp">${g}</div>`+EXPS.filter(e=>e.g===g).map(e=>`<button type="button" data-ex="${e.id}" aria-current="${e.id===id}">${esc(e.n)}<span>${e.id} · ${e.src} · ${esc(e.sec)}</span></button>`).join('')).join('');
+  const e=expById[id], s=SOURCES[e.src]; const recs=OBS.filter(o=>o.e===id);
+  $('#exDetail').innerHTML = `
+    <h3>${esc(e.n)}</h3>
+    <div class="desc">${esc(e.desc)}</div>
+    <dl class="fields">
+      <dt>Animal</dt><dd>${esc(e.animal)}</dd>
+      <dt>Stimulus</dt><dd>${esc(e.stim)}</dd>
+      <dt>Response</dt><dd>${esc(e.resp)}</dd>
+      <dt>Metric</dt><dd>${esc(e.metric)}</dd>
+      <dt>Unit</dt><dd>${esc(e.unit)}</dd>
+      <dt>Duration</dt><dd>${esc(e.dur)}</dd>
+      <dt>Repetitions</dt><dd>${esc(e.rep)}</dd>
+      <dt>Result</dt><dd>${esc(e.result)}</dd>
+      <dt>Records</dt><dd>${recs.length} (${recs.filter(r=>r.k==='Original').length} original, ${recs.filter(r=>r.k==='Derived').length} derived, ${recs.filter(r=>r.k==='Qualitative').length} qualitative)</dd>
+      <dt>Source</dt><dd>${chip(s.id)} ${esc(s.title)}<br><small>${esc(s.inst)} · ${esc(e.sec)}</small></dd>
+    </dl>
+    <p style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <a class="btn" href="${esc(s.url)}" target="_blank" rel="noopener">Open original source</a>
+      <button class="btn ghost" type="button" id="exInspect">Inspect data</button>
+    </p>`;
+  $('#exInspect').onclick=()=>goInspect(id);
+}
+$('#exList').addEventListener('click',e=>{const b=e.target.closest('[data-ex]'); if(b) renderExplorer(b.dataset.ex);});
+renderExplorer('E01');
+
+/* =====================================================================
+   CHARTS
+   ===================================================================== */
+const FONT='"IBM Plex Sans","Segoe UI",system-ui,sans-serif';
+const hasChart = typeof Chart!=='undefined';
+if(hasChart){
+  Chart.defaults.color='#AAB4C0'; Chart.defaults.font.family=FONT; Chart.defaults.font.size=12;
+  Chart.defaults.borderColor='#102F52'; Chart.defaults.plugins.legend.labels.boxWidth=12;
+  Chart.defaults.plugins.tooltip.backgroundColor='#000000'; Chart.defaults.plugins.tooltip.borderColor='#163F6B';
+  Chart.defaults.plugins.tooltip.borderWidth=1; Chart.defaults.plugins.tooltip.titleColor='#FFFFFF'; Chart.defaults.plugins.tooltip.bodyColor='#F2F4F7';
+}
+const NAVY='#163F6B', LIGHT='#F2F4F7', GREY='#AAB4C0', WHITE='#FFFFFF', DEEP='#0B2342';
+const axis=(title,extra={})=>Object.assign({title:{display:!!title,text:title,color:GREY},grid:{color:'#102F52'},ticks:{color:GREY}},extra);
+
+function card(host,{id,title,note,src,exp,kind,unit,tall}){
+  const d=document.createElement('div'); d.className='chartcard';
+  d.innerHTML=`<h3>${esc(title)}</h3><div class="cnote">${esc(note)}</div><div class="chartbox${tall?' tall':''}">${hasChart?`<canvas id="${id}" role="img" aria-label="${esc(title)}"></canvas>`:'<p class="muted">Chart.js não carregou (sem conexão com o CDN). Os valores estão na Data Table.</p>'}</div>
+  <div class="foot">${chip(src)}${kindBadge(kind)}<span>Unit: ${esc(unit)}</span><a href="#datatable" data-filter-exp="${exp}">Ver registros</a></div>`;
+  host.appendChild(d);
+  return hasChart ? $('#'+id) : null;
+}
+const gen = (host,cfg,chartCfg)=>{ const cv=card(host,cfg); if(cv) return new Chart(cv,chartCfg); };
+
+const chartGrid=$('#chartGrid');
+
+/* 1 — Salivary response over trials (Solovaichik) */
+gen(chartGrid,{id:'chSv',title:'Salivary Response Over Trials',note:'Hissing-sound reflex, applications 6 to 11, each reinforced (Solovaichik). Consecutive printed readings.',src:'S8',exp:'E23',kind:'Original',unit:'drops per 30 s'},
+{type:'line',data:{labels:['6','7','8','9','10','11'],datasets:[{label:'Drops / 30 s',data:['sv6','sv7','sv8','sv9','sv10','sv11'].map(V),borderColor:WHITE,backgroundColor:NAVY,pointBackgroundColor:NAVY,pointBorderColor:WHITE,pointRadius:6,borderWidth:1.5,tension:0}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:axis('Application number'),y:axis('Drops per 30 s',{min:0,suggestedMax:15})}}});
+
+/* 2 — Response by stimulus: latent period */
+gen(chartGrid,{id:'chLat',title:'Response by Stimulus: Latent Period',note:'Metronome and food shown are conditioned stimuli; food in the mouth is unconditioned (range 1–2 s). Separate demonstrations.',src:'S4',exp:'E01',kind:'Original',unit:'seconds'},
+{type:'bar',data:{labels:['Metronome (CS)','Food shown (CS)','Food in mouth (UCS)'],datasets:[{label:'Latent period (s)',data:[V('m_lat'),V('f_lat'),[V('u_lat'),byKey.u_lat.vh]],backgroundColor:[NAVY,NAVY,LIGHT],borderColor:GREY,borderWidth:1}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>Array.isArray(c.raw)?`${c.raw[0]}–${c.raw[1]} s`:`${c.raw} s`}}},scales:{x:axis(''),y:axis('Seconds',{min:0})}}});
+
+/* 3 — Derived secretion rate */
+gen(chartGrid,{id:'chRate',title:'Response by Stimulus: Derived Secretion Rate',note:'Dashboard calculation: drops ÷ window. Assumes a uniform rate, which the source does not state. Animal identity not confirmed across the two demonstrations.',src:'S4',exp:'E01',kind:'Derived',unit:'drops per second'},
+{type:'bar',data:{labels:['Metronome (11 drops / 45 s)','Food shown (6 drops / 15 s)'],datasets:[{label:'Drops per second',data:[V('m_rate'),V('f_rate')],backgroundColor:['rgba(0,0,0,0)','rgba(0,0,0,0)'],borderColor:WHITE,borderWidth:1.5,borderDash:[4,3]}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:axis(''),y:axis('Drops / s',{min:0})}}});
+
+/* 4 — Conditioned vs unconditioned (quassia) */
+gen(chartGrid,{id:'chCU',title:'Conditioned vs Unconditioned Response',note:'Quassia (Babkin). Unconditioned value is a mean of 10 experiments; conditioned value is for one minute of CS. Acid unconditioned value is ambiguous in the transcription and is not plotted.',src:'S6',exp:'E10',kind:'Original',unit:'c.c.'},
+{type:'bar',data:{labels:['Unconditioned (quassia in mouth)','Conditioned (quassia at a distance)'],datasets:[{label:'c.c.',data:[V('bq_u'),V('bq_c')],backgroundColor:[LIGHT,NAVY],borderColor:GREY,borderWidth:1}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:axis(''),y:axis('Salivary secretion (c.c.)',{min:0})}}});
+
+/* 5 — Before vs after: secondary extinction of the UCR */
+gen(chartGrid,{id:'chPz',title:'Response Before vs After Extinctions',note:'Unconditioned reflex to acid, before and after several extinctions of a tactile conditioned defence reflex (Perelzweig).',src:'S6',exp:'E11',kind:'Original',unit:'c.c.'},
+{type:'bar',data:{labels:['Before extinctions','After extinctions'],datasets:[{label:'c.c.',data:[V('pz_b'),V('pz_a')],backgroundColor:[LIGHT,NAVY],borderColor:GREY,borderWidth:1}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:axis(''),y:axis('Salivary secretion (c.c.)',{min:0})}}});
+
+/* 6 — Inhibitory after-effect */
+gen(chartGrid,{id:'chCh',title:'Response Before vs After an Inhibitory Combination',note:'Metronome reflex tested 1½ min (day 1) and 5½ min (day 2) after the combination (Chebotareva). Pavlov states −50% and −75%.',src:'S7',exp:'E18',kind:'Original',unit:'drops'},
+{type:'bar',data:{labels:['Day 1 (1 application)','Day 2 (2 applications)'],datasets:[{label:'Before',data:[V('ch_b1'),V('ch_b2')],backgroundColor:LIGHT,borderColor:GREY,borderWidth:1},{label:'After',data:[V('ch_a1'),V('ch_a2')],backgroundColor:NAVY,borderColor:GREY,borderWidth:1}]},
+ options:{maintainAspectRatio:false,scales:{x:axis(''),y:axis('Drops',{min:0})}}});
+
+/* 7 — Response comparison: Zeliony */
+gen(chartGrid,{id:'chZe',title:'Response Comparison: Rate of Change of the Stimulus',note:'Same tuning fork D-2: sudden stoppage as signal vs gradual damping over 12 minutes (Zeliony). Test interval length for the 32 drops is not stated.',src:'S5',exp:'E06',kind:'Original',unit:'drops'},
+{type:'bar',data:{labels:['Sudden stop','Gradual damping (12 min)'],datasets:[{label:'Drops',data:[V('ze_stop'),V('ze_damp')],backgroundColor:[NAVY,LIGHT],borderColor:GREY,borderWidth:1}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:axis(''),y:axis('Drops',{min:0})}}});
+
+/* 8 — Response comparison: Kasherininova */
+gen(chartGrid,{id:'chKa',title:'Response Comparison: Conditioned Inhibition',note:'Tactile CS alone (1 min), inhibitory combination at the 25th application (1 min) and metronome alone after 34 repetitions (duration not stated). Reading units differ slightly; see the flag.',src:'S7',exp:'E17',kind:'Original',unit:'drops'},
+{type:'bar',data:{labels:['Tactile CS alone','Combination, 25th application','Metronome alone, after 34 reps'],datasets:[{label:'Drops',data:[V('ka_cs'),V('ka_inh'),V('ka_met')],backgroundColor:[NAVY,LIGHT,GREY],borderColor:WHITE,borderWidth:1}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:axis(''),y:axis('Drops',{min:0})}}});
+
+/* 9 — Stimulus frequency (dashboard count) */
+(function(){
+  const cnt={}; OBS.filter(o=>o.k!=='Derived').forEach(o=>{cnt[o.t]=(cnt[o.t]||0)+1;});
+  const ent=Object.entries(cnt).sort((a,b)=>b[1]-a[1]);
+  gen(chartGrid,{id:'chFreq',title:'Stimulus Frequency',note:'Dashboard count of extracted records by stimulus type. It describes this dataset, not the frequency of stimuli in Pavlov’s laboratory.',src:'S4',exp:'',kind:'Derived',unit:'records',tall:true},
+  {type:'bar',data:{labels:ent.map(e=>e[0]),datasets:[{label:'Records',data:ent.map(e=>e[1]),backgroundColor:'rgba(0,0,0,0)',borderColor:WHITE,borderWidth:1.5,borderDash:[4,3]}]},
+   options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:axis('Records',{min:0,ticks:{color:GREY,precision:0}}),y:axis('')}}});
+})();
+
+/* not built */
+const NO = [
+ ['Response Distribution','Os valores em gotas vêm de cães, estímulos e janelas diferentes; um histograma agregado misturaria experimentos sem justificativa.'],
+ ['Duration vs Response','Não há experimento em que a duração do estímulo variou com os demais fatores constantes; os pares duração/resposta pertencem a experimentos distintos.'],
+ ['Full extinction curve (Lecture IV, Table 5)','A série completa está numa imagem GIF não legível pela pesquisa; só existem 4 valores soltos no texto.'],
+ ['Acquisition curve (conditioning)','O texto não traz o número de pareamentos nem a resposta a cada pareamento no mesmo animal.'],
+ ['Recovery across rest periods','Só há dois pontos (3 → 6 gotas após 23 min) e intervalos com resposta qualitativa; não sustentam uma curva.'],
+ ['Response by Experiment (aggregated)','As métricas (gotas por janela, c.c., segundos) não são comparáveis entre experimentos.']
+];
+$('#noChartGrid').innerHTML = NO.map(n=>`<div class="nochart"><h4>${esc(n[0])}</h4><p class="msg">Dados quantitativos insuficientes na fonte primária para esta visualização.</p><p>${esc(n[1])}</p></div>`).join('');
+
+/* filter link from chart cards */
+document.addEventListener('click',e=>{
+  const a=e.target.closest('[data-filter-exp]'); if(!a) return;
+  T.q=a.dataset.filterExp||''; $('#tQ').value=T.q; T.page=0; renderTable();
+});
+
+/* ---------- Conditioning analysis ---------- */
+(function(){
+  const st=(cls,txt)=>`<span class="st ${cls}">${txt}</span>`;
+  const stages=[
+   {h:'1. Neutral stimulus',st:st('','Measured (baseline)'),li:[`No stimulus applied: ${V('base0')} drops over 1–2 h ${chip('S4')}`,'Glands stay inactive until a stimulus is applied','Puppies fed only on milk did not salivate to the sight of bread or meat (no figures) '+chip('S4')]},
+   {h:'2. Unconditioned stimulus',st:st('','Measured (latency)'),li:[`Food in mouth: secretion begins in ${V('u_lat')}–${byKey.u_lat.vh} s ${chip('S4')}`,'Purely reflex; present from birth']},
+   {h:'3. Association',st:st('','Measured (pairings)'),li:[`Forward order, established after ${V('kr_buz')}, ${V('kr_rot')} and ${V('kr_amyl')} combinations (different stimuli) ${chip('S4')}`,`Backward order: not established after ${V('kr_bell')} and ${V('kr_van')} combinations ${chip('S4')}`,'Pairings used for the lecture metronome dog: not stated']},
+   {h:'4. Conditioned stimulus',st:st('','Measured (latency)'),li:[`Metronome: secretion begins after ${V('m_lat')} s ${chip('S4')}`,`Food shown: after ${V('f_lat')} s ${chip('S4')}`,'Longer than the 1–2 s of the unconditioned reflex']},
+   {h:'5. Conditioned response',st:st('','Measured (drops)'),li:[`Metronome: ${V('m_drops')} drops in 45 s ${chip('S4')}`,`Food shown: ${V('f_drops')} drops in 15 s ${chip('S4')}`,'Pavlov reports the motor component (licking, turning) as qualitative']}
+  ];
+  $('#pipe').innerHTML=stages.map(s=>`<div class="stage"><h4>${s.h}</h4>${s.st}<ul>${s.li.map(l=>`<li>${l}</li>`).join('')}</ul></div>`).join('');
+  const host=$('#condCharts');
+  if(hasChart){
+    const items=[['kr_buz','Buzzer → food'],['kr_rot','Rotating object → food'],['kr_amyl','Amyl acetate → acid'],['kr_bell','Bell after food (backward)'],['kr_van','Vanillin after acid (backward)']];
+    gen(host,{id:'chPair',title:'Combinations Until a Conditioned Reflex Formed',note:'Krestovnikov: forward order (neutral stimulus first) established a reflex after 1 to 20 combinations; backward order failed after 374 and 427. Different stimuli and dogs per bar; do not read as one experiment.',src:'S4',exp:'E02',kind:'Original',unit:'combinations',tall:true},
+    {type:'bar',data:{labels:items.map(i=>i[1]),datasets:[
+      {label:'Reflex established',data:items.map(i=>byKey[i[0]].out==='established'?V(i[0]):null),backgroundColor:NAVY,borderColor:WHITE,borderWidth:1},
+      {label:'Not established',data:items.map(i=>byKey[i[0]].out!=='established'?V(i[0]):null),backgroundColor:'rgba(0,0,0,0)',borderColor:WHITE,borderWidth:1.5,borderDash:[4,3]}]},
+     options:{indexAxis:'y',maintainAspectRatio:false,scales:{x:axis('Combinations applied',{min:0,stacked:true}),y:axis('',{stacked:true})}}});
+  } else { card(host,{id:'x',title:'Combinations until a reflex formed',note:'',src:'S4',exp:'E02',kind:'Original',unit:'combinations'}); }
+  const box=document.createElement('div'); box.className='panel';
+  box.innerHTML=`<h3 style="font-size:17px;margin-bottom:8px">Condições documentadas</h3>
+  <ul class="ul">
+    <li>O estímulo condicionado deve começar <b>antes</b> do incondicionado; com a ordem invertida o reflexo não se forma ${chip('S4')}</li>
+    <li>Com estímulo neutro aplicado 10, 5 ou 1 s depois do início do incondicionado, o resultado foi sempre negativo em <b>${V('kr_5')} cães</b> ${chip('S4')}</li>
+    <li>Um estímulo térmico de ${V('so_45')} °C virou sinal alimentar; ${V('so_38')}–${byKey.so_38.vh} °C foi ineficaz ${chip('S4')}</li>
+    <li>Segunda ordem: quadrado preto, 5,5 gotas em 25 s na 10ª apresentação ${chip('S5')}</li>
+    <li>Conforme a lecture de 1904, propriedades como a cor funcionam como sinais do objeto ${chip('S1')}</li>
+  </ul>`;
+  host.appendChild(box);
+})();
+
+/* ---------- Extinction analysis ---------- */
+(function(){
+  const host=$('#extCharts');
+  if(hasChart){
+    gen(host,{id:'chSp',title:'Repetition vs Response: Speransky',note:'Metronome, reinforced each time. Markers are printed values only; gaps are unobserved and not interpolated. Day 3 x-values are positions within the session.',src:'S8',exp:'E22',kind:'Original',unit:'drops',tall:true},
+    {type:'scatter',data:{datasets:[
+      {label:'Day 1: 10-min intervals',data:[{x:1,y:V('sp1_1')},{x:2,y:V('sp1_2')},{x:11,y:V('sp1_11')},{x:12,y:V('sp1_12')}],backgroundColor:LIGHT,borderColor:LIGHT,pointStyle:'rect',pointRadius:6,showLine:false},
+      {label:'Day 2: 1½-min intervals',data:[{x:1,y:V('sp2_1')},{x:3,y:V('sp2_3')},{x:8,y:V('sp2_8')},{x:22,y:V('sp2_22')}],backgroundColor:NAVY,borderColor:WHITE,borderWidth:1.5,pointRadius:7,showLine:false},
+      {label:'Day 3: 10-min intervals (metronome positions)',data:[{x:1,y:V('sp3_1')},{x:5,y:V('sp3_5')},{x:9,y:V('sp3_9')}],backgroundColor:GREY,borderColor:GREY,pointStyle:'triangle',pointRadius:7,showLine:false}]},
+     options:{maintainAspectRatio:false,scales:{x:axis('Stimulation number',{min:0,max:24}),y:axis('Drops',{min:0,suggestedMax:13})}}});
+    gen(host,{id:'chDem',title:'Lecture IV Demonstration: Last Extinction Reading',note:'Metronome without reinforcement, 30 s every 2 min. The rise from 5 to 7 drops at the 5th repetition coincided with a small disturbance. Only these values appear in the text; Table 5 is an image.',src:'S6',exp:'E09',kind:'Original',unit:'drops'},
+    {type:'bar',data:{labels:['Before 5th repetition','5th repetition (disturbance)','Last reading'],datasets:[{label:'Drops',data:[V('ed_pre'),V('ed_5'),V('ed_end')],backgroundColor:[NAVY,LIGHT,NAVY],borderColor:GREY,borderWidth:1}]},
+     options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:axis(''),y:axis('Drops',{min:0,suggestedMax:8})}}});
+  } else { card(host,{id:'x',title:'Repetition vs Response',note:'',src:'S8',exp:'E22',kind:'Original',unit:'drops'}); }
+  const c=$('#extCards');
+  c.innerHTML=`
+  <div class="panel"><h3 style="font-size:17px;margin-bottom:8px">Observação original</h3>
+    <ul class="ul">
+      <li>Mesmo reforçado, o metrônomo a cada 10 min caiu de ${V('sp1_1')} e ${V('sp1_2')} para ${V('sp1_11')} gotas nas duas últimas aplicações; Pavlov indica redução de 25% ${chip('S8')}</li>
+      <li>Com intervalo de 1½ min: ${V('sp2_1')} → ${V('sp2_3')} (3ª, −60%) → ${V('sp2_8')} (8ª, −82%) → ${V('sp2_22')} (22ª) → 0 ${chip('S8')}</li>
+      <li>Na lecture de 1904: a reação à visão do alimento fica cada vez mais fraca e chega a zero; quanto menores os intervalos, mais rápido ${chip('S1')}</li>
+      <li>Quando o leite deixa de agir, o pão ainda é eficaz; quando o pão perde o efeito, o ácido ainda age ${chip('S1')}</li>
+      <li>Extinções repetidas no mesmo animal exigem cada vez menos estímulos não reforçados; em alguns cães, uma só aplicação basta ${chip('S6')}</li>
+    </ul></div>
+  <div class="panel"><h3 style="font-size:17px;margin-bottom:8px">Cálculo derivado e limites</h3>
+    <ul class="ul">
+      <li>${kindBadge('Derived')} (4,5 − 11) ÷ 11 = ${num(V('sp_d1'))}% e (2 − 11) ÷ 11 = ${num(V('sp_d2'))}%; coincidem com os 60% e 82% impressos.</li>
+      <li>${kindBadge('Derived')} Dia 1: (9 − 12) ÷ 12 = −25%, igual ao valor impresso.</li>
+      <li>Os dados de Speransky são de <b>queda sob reforço</b>; o alimento era dado. Não são extinção pela omissão do alimento, que é o caso da demonstração de Lecture IV.</li>
+      <li>Não há série completa de extinção: a Tabela 5 (demonstração) e as Tabelas 6 a 8 de Babkin são imagens e não foram transcritas.</li>
+      <li>Flutuações de 2, 5 e 7 gotas na sessão de 1½ min não têm número de tentativa e não foram plotadas ${chip('S8')}</li>
+    </ul>
+    <p class="muted" style="margin-top:10px">${kindBadge('Qualitative')} Pavlov interpreta a extinção como uma forma de inibição, não como destruição do reflexo, porque o reflexo se recupera espontaneamente ${chip('S6')}</p></div>`;
+})();
+
+/* ---------- Recovery analysis ---------- */
+(function(){
+  const host=$('#recCharts');
+  if(hasChart){
+    gen(host,{id:'chRec',title:'Spontaneous Recovery: Metronome Reflex',note:'Last extinction reading vs a test 23 minutes later, same dog. Drops (left axis) and latent period (right axis).',src:'S6',exp:'E09',kind:'Original',unit:'drops; seconds',tall:true},
+    {type:'bar',data:{labels:['Last extinction reading','Test 23 min later'],datasets:[
+      {label:'Drops (30 s)',data:[V('ed_end'),V('ed_rec')],backgroundColor:NAVY,borderColor:WHITE,borderWidth:1,yAxisID:'y'},
+      {label:'Latent period (s)',data:[V('ed_end_l'),V('ed_rec_l')],backgroundColor:LIGHT,borderColor:GREY,borderWidth:1,yAxisID:'y1'}]},
+     options:{maintainAspectRatio:false,scales:{x:axis(''),y:axis('Drops',{min:0,suggestedMax:8,position:'left'}),y1:axis('Latent period (s)',{min:0,suggestedMax:16,position:'right',grid:{drawOnChartArea:false}})}}});
+    gen(host,{id:'chZa',title:'Interval After Acid Secretion vs Restoration',note:'Zavadsky: the response to the test is qualitative (“minimal”, “considerable”), so only the printed intervals are shown. Response values are in table images.',src:'S6',exp:'E16',kind:'Original',unit:'seconds (interval)',tall:true},
+    {type:'bar',data:{labels:['Test at 40 s: considerable restoration, both glands','Test at 7 min 10 s: minimal restoration, one gland'],datasets:[{label:'Interval (s)',data:[V('za_40'),V('za_430')],backgroundColor:[NAVY,LIGHT],borderColor:GREY,borderWidth:1}]},
+     options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:axis('Seconds after the end of the acid secretion',{min:0}),y:axis('')}}});
+  } else { card(host,{id:'x',title:'Spontaneous Recovery',note:'',src:'S6',exp:'E09',kind:'Original',unit:'drops'}); }
+  const L=(o,d,i)=>`<div class="layers"><div class="ly"><b>Observação original</b>${o}</div><div class="ly"><b>Cálculo derivado</b>${d}</div><div class="ly"><b>Interpretação</b>${i}</div></div>`;
+  $('#recCards').innerHTML=[
+   ['Recuperação espontânea (demonstração)',L(`Última leitura: ${V('ed_end')} gotas, latência ${V('ed_end_l')} s. Após 23 min: ${V('ed_rec')} gotas, latência ${V('ed_rec_l')} s ${chip('S6')}`,`${kindBadge('Derived')} +${V('ed_d1')} gotas (+100%); latência ${V('ed_d2')} s`,`Pavlov afirma que ocorreu recuperação considerável espontaneamente durante a aula ${chip('S6')}`)],
+   ['Tempo de recuperação após extinção',L(`Reflexo de carne em pó extinto até zero volta ao valor inicial em cerca de ${V('rc_30')} a ${byKey.rc_30.vh} min. Em geral, de poucos minutos a várias horas ${chip('S6')}`,'Nenhum cálculo',`Pavlov usa a recuperação espontânea para rejeitar a ideia de destruição do reflexo ${chip('S6')}`)],
+   ['Restauração pelo ácido e por outros estímulos',L(`Após cerca de ${V('rc_acid')} min de secreção ao ácido, o reflexo de carne em pó foi quase totalmente restaurado. Com 40 s de intervalo: restauração considerável (duas glândulas); com 7 min 10 s: mínima (uma glândula) ${chip('S6')}`,`${kindBadge('Derived')} 7 min 10 s = 430 s (conversão de unidade)`,`Pavlov chama a remoção temporária da inibição de “dis-inhibition” ${chip('S6')}`)],
+   ['Descanso, alimento e ácido na lecture de 1904',L(`Um estímulo que perdeu o efeito só o recupera depois de um repouso de várias horas; comer pão, outro alimento ou ácido na boca o restaura, e quanto maior a atividade, mais completa a restauração ${chip('S1')}`,'Nenhum cálculo (sem números além de “várias horas”)','Sem interpretação numérica nesta fonte')],
+   ['Recuperação nos dias seguintes (Speransky)',L(`Reflexo ao metrônomo voltou à intensidade usual no dia seguinte; no terceiro dia os elementos corticais estavam quase totalmente restaurados ${chip('S8')}`,'Nenhum cálculo (valores não impressos)',`Pavlov atribui a queda a esgotamento funcional e a volta à recuperação dos elementos corticais ${chip('S8')}`)]
+  ].map(c=>`<div class="panel"><h3 style="font-size:16px;margin-bottom:8px">${c[0]}</h3>${c[1]}</div>`).join('');
+})();
+
+/* ---------- Timeline ---------- */
+$('#tl').innerHTML = EVENTS.map(e=>`<li><span class="yr">${esc(e.y)}</span><span class="tx">${esc(e.t)} ${chip(e.s)}</span></li>`).join('');
+
+/* =====================================================================
+   DATA TABLE
+   ===================================================================== */
+const T={q:'',kind:'',type:'',src:'',sortKey:'id',dir:1,page:0,size:10};
+const COLS=[
+ ['id','ID'],['exp','Experiment'],['s','Stimulus'],['t','Stimulus Type'],['m','Metric'],['val','Value'],['u','Response Unit'],['d','Duration'],['tr','Trial'],['c','Condition'],['a','Animal'],['o','Observation'],['k','Kind'],['src','Source']
+];
+const rowVal=(o,k)=>{switch(k){case 'exp':return expById[o.e].n;case 'val':return o.v;case 'src':return o.src+' '+o.sec;default:return o[k];}};
+$('#dt thead').innerHTML='<tr>'+COLS.map(c=>`<th scope="col" data-k="${c[0]}" tabindex="0">${c[1]}<span class="sortmark"></span></th>`).join('')+'</tr>';
+function fillFilters(){
+  const add=(sel,vals)=>vals.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;$(sel).appendChild(o);});
+  add('#tKind',['Original','Derived','Qualitative']);
+  add('#tType',[...new Set(OBS.map(o=>o.t))].sort());
+  add('#tSrc',Object.keys(SOURCES));
+}
+fillFilters();
+function filtered(){
+  const q=T.q.trim().toLowerCase();
+  let rows=OBS.filter(o=>(!T.kind||o.k===T.kind)&&(!T.type||o.t===T.type)&&(!T.src||o.src===T.src));
+  if(q) rows=rows.filter(o=>[o.id,o.e,expById[o.e].n,o.s,o.t,o.m,fmtVal(o),o.u,o.d,o.tr,o.c,o.a,o.o,o.k,o.src,o.sec,o.og].join(' ').toLowerCase().includes(q));
+  rows=rows.slice().sort((a,b)=>{
+    const x=rowVal(a,T.sortKey), y=rowVal(b,T.sortKey);
+    if(x==null&&y==null) return 0; if(x==null) return 1; if(y==null) return -1;
+    if(typeof x==='number'&&typeof y==='number') return (x-y)*T.dir;
+    return String(x).localeCompare(String(y),'en',{numeric:true})*T.dir;
+  });
+  return rows;
+}
+function renderTable(){
+  const rows=filtered(); const pages=Math.max(1,Math.ceil(rows.length/T.size)); if(T.page>=pages) T.page=pages-1;
+  const slice=rows.slice(T.page*T.size,(T.page+1)*T.size);
+  $('#dt tbody').innerHTML = slice.map(o=>`<tr>
+    <td>${o.id}</td><td>${esc(expById[o.e].n)}</td><td>${esc(o.s)}</td><td>${esc(o.t)}</td><td>${esc(o.m)}</td>
+    <td class="num">${fmtVal(o)}</td><td>${esc(o.u)}</td><td>${esc(o.d)}</td><td>${esc(o.tr)}</td><td>${esc(o.c)}</td><td>${esc(o.a)}</td>
+    <td>${esc(o.o)}${o.flag?`<span class="flag">${esc(o.flag)}</span>`:''}</td><td>${kindBadge(o.k)}</td>
+    <td>${chip(o.src)} <small>${esc(o.sec)}</small></td></tr>`).join('') || '<tr><td colspan="14" class="muted">Nenhum registro para estes filtros.</td></tr>';
+  $$('#dt th').forEach(th=>{const m=$('.sortmark',th); m.textContent = th.dataset.k===T.sortKey ? (T.dir>0?' ▲':' ▼') : '';});
+  $('#pager').innerHTML=`<button class="btn ghost" type="button" id="pPrev" ${T.page===0?'disabled':''}>Anterior</button><span>Página ${T.page+1} de ${pages} · ${rows.length} registros</span><button class="btn ghost" type="button" id="pNext" ${T.page>=pages-1?'disabled':''}>Próxima</button>`;
+  $('#pPrev').onclick=()=>{T.page--;renderTable();}; $('#pNext').onclick=()=>{T.page++;renderTable();};
+}
+$('#tQ').addEventListener('input',e=>{T.q=e.target.value;T.page=0;renderTable();});
+$('#tKind').addEventListener('change',e=>{T.kind=e.target.value;T.page=0;renderTable();});
+$('#tType').addEventListener('change',e=>{T.type=e.target.value;T.page=0;renderTable();});
+$('#tSrc').addEventListener('change',e=>{T.src=e.target.value;T.page=0;renderTable();});
+function sortBy(k){ if(T.sortKey===k) T.dir*=-1; else {T.sortKey=k;T.dir=1;} renderTable(); }
+$('#dt thead').addEventListener('click',e=>{const th=e.target.closest('th'); if(th) sortBy(th.dataset.k);});
+$('#dt thead').addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){const th=e.target.closest('th'); if(th){e.preventDefault();sortBy(th.dataset.k);}}});
+$('#tCsv').addEventListener('click',()=>{
+  const rows=filtered();
+  const head=['id','experiment','stimulus','stimulus_type','metric','value','value_upper','unit','duration','trial','condition','animal','observation','kind','source','source_title','section','original_text','transformation','url'];
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const lines=[head.join(',')].concat(rows.map(o=>[o.id,expById[o.e].n,o.s,o.t,o.m,o.v,o.vh,o.u,o.d,o.tr,o.c,o.a,o.o,o.k,o.src,SOURCES[o.src].title,o.sec,o.og,o.x,SOURCES[o.src].url].map(q).join(',')));
+  const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='pavlov_extracted_data.csv'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+});
+renderTable();
+
+/* =====================================================================
+   SOURCE INSPECTOR
+   ===================================================================== */
+$('#inspSel').innerHTML = EXPS.map(e=>`<option value="${e.id}">${e.id} · ${esc(e.n)}</option>`).join('') + ['S2','S3'].map(i=>`<option value="${i}">${i} · ${esc(SOURCES[i].title)} (contextual source)</option>`).join('');
+function renderInspector(id){
+  if(SOURCES[id] && !expById[id]){
+    const s=SOURCES[id];
+    $('#inspMeta').innerHTML=`
+    <dl class="fields" style="grid-template-columns:110px minmax(0,1fr)">
+      <dt>Source</dt><dd>${chip(s.id)} ${esc(s.title)}</dd>
+      <dt>Institution</dt><dd>${esc(s.inst)}</dd>
+      <dt>URL</dt><dd><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url)}</a></dd>
+      <dt>Level</dt><dd>${esc(s.tier)}</dd>
+    </dl>
+    <p style="margin-top:14px"><a class="btn" href="${esc(s.url)}" target="_blank" rel="noopener">Open Original Source</a></p>`;
+    $('#inspRows').innerHTML=`<p class="muted">Fonte de contexto: não fornece medidas experimentais. Serve às datas e afirmações biográficas abaixo.</p><table><thead><tr><th>Year</th><th>Statement used</th></tr></thead><tbody>${EVENTS.filter(v=>v.s===id).map(v=>`<tr><td>${esc(v.y)}</td><td>${esc(v.t)}</td></tr>`).join('')}</tbody></table>`;
+    return;
+  }
+  const e=expById[id], s=SOURCES[e.src], recs=OBS.filter(o=>o.e===id);
+  $('#inspMeta').innerHTML=`
+    <dl class="fields" style="grid-template-columns:110px minmax(0,1fr)">
+      <dt>Source</dt><dd>${chip(s.id)} ${esc(s.title)}</dd>
+      <dt>Institution</dt><dd>${esc(s.inst)}</dd>
+      <dt>URL</dt><dd><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url)}</a></dd>
+      <dt>Section</dt><dd>${esc(e.sec)}</dd>
+      <dt>Level</dt><dd>${esc(s.tier)}</dd>
+    </dl>
+    <p style="margin-top:14px"><a class="btn" href="${esc(s.url)}" target="_blank" rel="noopener">Open Original Source</a></p>`;
+  $('#inspRows').innerHTML=`<table><thead><tr><th>ID</th><th>Original data</th><th>Original unit</th><th>Transformation applied</th><th>Kind</th></tr></thead><tbody>${recs.map(o=>`<tr>
+    <td>${o.id}</td>
+    <td>${o.k==='Derived'?'<span class="muted">calculated by the dashboard</span>':esc(o.og)}${o.flag?`<span class="flag">${esc(o.flag)}</span>`:''}<br><small>${esc(o.m)} · ${esc(o.tr)}</small></td>
+    <td>${o.k==='Derived'?'—':esc(o.u)}</td>
+    <td>${esc(o.x)}${o.k==='Derived'?`<br><small>Derived value: ${fmtVal(o)} ${esc(o.u)}</small>`:''}</td>
+    <td>${kindBadge(o.k)}</td></tr>`).join('')}</tbody></table>`;
+}
+$('#inspSel').addEventListener('change',e=>renderInspector(e.target.value));
+renderInspector('E01');
+
+/* =====================================================================
+   RESEARCH NOTES
+   ===================================================================== */
+$('#notesList').innerHTML = EXPS.map(e=>{
+  const s=SOURCES[e.src], recs=OBS.filter(o=>o.e===e.id);
+  const quant=recs.filter(r=>r.k==='Original'&&r.v!=null).length;
+  return `<details class="note"><summary><b>${e.id} · ${esc(e.n)}</b><small>${e.src} · ${esc(e.sec)} · ${quant} original numeric</small></summary><div class="nb">
+    <div><span class="lab">Contexto</span>${esc(e.desc)}</div>
+    <div><span class="lab">Método descrito na fonte</span>${esc(e.method)}</div>
+    <div><span class="lab">Observação</span>${esc(recs.filter(r=>r.k!=='Derived').map(r=>r.o).slice(0,3).join(' · '))}</div>
+    <div><span class="lab">Resultado quantitativo</span>${esc(e.result)}</div>
+    <div><span class="lab">Limitação</span>${esc(e.lim)}</div>
+    <div><span class="lab">Fonte</span>${chip(s.id)} ${esc(s.title)} · ${esc(e.sec)} · <a href="${esc(s.url)}" target="_blank" rel="noopener">abrir</a></div>
+  </div></details>`;
+}).join('');
+
+/* =====================================================================
+   METHODOLOGY helpers
+   ===================================================================== */
+(function(){
+  const c={Original:0,Derived:0,Qualitative:0}; OBS.forEach(o=>c[o.k]++);
+  const max=Math.max(...Object.values(c));
+  const cls={Original:'',Derived:'d',Qualitative:'q'};
+  $('#kindBars').innerHTML=Object.entries(c).map(([k,n])=>`<div class="bar ${cls[k]}"><span>${k}</span><i style="width:${Math.round(n/max*100)}%"></i><b>${n}</b></div>`).join('');
+  const conflicts=OBS.filter(o=>o.flag);
+  $('#conflicts').innerHTML='<ul class="ul">'+conflicts.map(o=>`<li><b>${o.id}</b> · ${esc(expById[o.e].n)}: ${esc(o.flag)}. ${esc(o.o)} ${chip(o.src)}</li>`).join('')+'</ul>';
+})();
+
+/* =====================================================================
+   SOURCE HIERARCHY
+   ===================================================================== */
+(function(){
+  const count=id=>OBS.filter(o=>o.src===id).length;
+  const row=s=>`<div class="row"><div><b>${esc(s.title)}</b><br><small>${esc(s.inst)}</small></div><div>${count(s.id)} registros<br><small>${esc(s.tier)}</small></div><div>${esc(s.role)}<br><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url)}</a></div></div>`;
+  $('#tiers').innerHTML=`
+   <div class="tier t1"><h3>PRIMARY SOURCE · Ivan Pavlov — Nobel Lecture, Nobel Prize</h3>${row(SOURCES.S1)}</div>
+   <div class="tier t2"><h3>INSTITUTIONAL · Nobel Prize</h3>${row(SOURCES.S2)}${row(SOURCES.S3)}</div>
+   <div class="tier"><h3>PRIMARY TEXT, ACADEMIC ARCHIVE COPY · Pavlov, Conditioned Reflexes (1927)</h3>
+     <p class="muted" style="margin-bottom:8px">Texto do próprio Pavlov (tradução de G. V. Anrep), lido na cópia da York University. Fonte dos números experimentais, já que a Nobel Lecture quase não os contém.</p>
+     ${['S4','S5','S6','S7','S8'].map(i=>row(SOURCES[i])).join('')}</div>
+   <div class="tier"><h3>SECONDARY SOURCES</h3><p class="muted" style="margin:0">Nenhuma fonte secundária forneceu valor algum. Resumos e cartões de estudo encontrados nas buscas não foram usados.</p></div>`;
+})();
+</script>
+</body>
+</html>
